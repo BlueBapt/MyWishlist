@@ -1,6 +1,6 @@
 <?php
 
-namespace ProjetWishlist\model;
+namespace mywishlist\model;
 
 class Liste extends \Illuminate\Database\Eloquent\Model {
     
@@ -9,11 +9,11 @@ class Liste extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = false;
 
     public function item() {
-        return $this->belongsTo('ProjetWishlist\modele\Liste', 'liste_id');
+        return $this->belongsTo('mywishlist\model\Liste', 'liste_id');
     }
 
     public function message() {
-        return $this->belongsTo('ProjetWishlist\modele\Liste', 'no');
+        return $this->belongsTo('mywishlist\model\Liste', 'no');
     }
     
     public function affichageDetail() {
@@ -22,7 +22,7 @@ class Liste extends \Illuminate\Database\Eloquent\Model {
     }
 
     public function cookie($date){
-        setcookie("EtatReservation","valeur", time() +$date,"EXO/ProjetWishlist/model");
+        setcookie("EtatReservation","valeur", time() +$date,"mywishlist\model");
         if( isset( $_COOKIE["EtatReservation"])) {
             $track_user_code = $_COOKIE['EtatReservation'];
         }
