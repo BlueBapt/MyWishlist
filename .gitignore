@@ -1,0 +1,6 @@
+/vendor/
+.classpath
+.project
+.iml
+.xml
+.idea
