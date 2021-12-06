@@ -22,31 +22,3 @@ if(isset($_GET["id"])){
         echo $r->titre."<br>";
     }
 }
-
-//pour inserer
-/**
-$nl = new Liste();
-$nl->no=4;
-$nl->titre="nouvelle entree";
-$nl->description="description";
-$nl->save();
-$res=Liste::select("titre")->where("no","=",4)->get();
-foreach ($res as $r){
-    echo $r->titre."<br>";
-}
-*/
-
-/*
-// pour faire le lien
-$res=Item::select("id","nom","descr","liste_id")->get();
-//echo $res->nom.",".$res->descr.",".$res->liste()->first()->titre."<br>";
-foreach ($res as $r){
-    if($r->liste()->first()!=null){
-        echo $r->nom.",".$r->descr.",".$r->liste()->first()->titre."<br>";
-    }else{
-        echo $r->nom.",".$r->descr."<br>";
-    }
-
-
-}
-*/
