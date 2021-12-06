@@ -8,5 +8,13 @@ $app->get('/hello/{name}',
         $name = $args['name'];
         $rs->getBody()->write("Hello, $name");
         return $rs;
-    })->setName("test");
+    })->setName("test ");
+
+$app->get('/bjr/{name}',
+    function (Request $rq, Response $rs, $args):Response {
+        $name = $args['name'];
+        $rs->getBody()->write("bjr, $name");
+        return $rs;
+    })->setName("test ");
+
 $app->run();

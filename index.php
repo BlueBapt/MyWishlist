@@ -36,6 +36,7 @@ foreach ($res as $r){
 }
 */
 
+/*
 // pour faire le lien
 $res=Item::select("id","nom","descr","liste_id")->get();
 //echo $res->nom.",".$res->descr.",".$res->liste()->first()->titre."<br>";
@@ -48,5 +49,4 @@ foreach ($res as $r){
 
 
 }
-
-
+*/
