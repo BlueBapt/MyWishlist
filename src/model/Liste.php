@@ -9,7 +9,7 @@ class Liste extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = false;
 
     public function item() {
-        return $this->belongsTo('mywishlist\model\Liste', 'liste_id');
+        return $this->belongsTo('mywishlist\model\Item', 'liste_id');
     }
 }
 

@@ -3,7 +3,10 @@
 namespace mywishlist\vue;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use \mywishlist\model\Liste as Liste;
 require_once 'vendor/autoload.php';
+require_once 'src/model/Liste.php';
+use Illuminate\Database\Capsule\Manager as DB;
 class VueCreateurListe
 {
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
@@ -20,6 +23,37 @@ END);
             $rs->getBody()->write(<<<END
             <div class="reussite" >L'opération est une réussite!</div>
             END);
+            echo "oui";
+            $db = new DB();
+            $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
+                'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+                'prefix'=>''] );
+            $db->setAsGlobal();
+            $db->bootEloquent();
+            echo "oui";
+
+            try {
+                $res = Liste::select("titre")->get();
+            }catch(\Exception $e){
+                echo $e;
+            }
+            echo "oui";
+            $i =1;
+            foreach ($res as $r){
+                $i++;
+            }
+            $nl = new Liste();
+            $nl->no=$i;
+            $nl->titre=$_GET["titre"];
+            $nl->description=$_GET["description"];
+            $nl->expiration=$_GET["exp"];
+            echo "oui";
+            try {
+                $nl->save();
+            }catch(\Exception $e){
+                echo $e;
+            }
+            echo "oui";
         }
         $rs->getBody()->write(<<<END
     <form class="formulaire">
