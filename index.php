@@ -4,10 +4,12 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use \mywishlist\vue\VueCreateurListe as VueCreateurListe;
 use \mywishlist\vue\VueAjoutItem as VueAjoutItem;
 use \mywishlist\vue\VueListe as VueListe;
+use \mywishlist\vue\VueAfficherItem as VueAfficherItem;
 require 'vendor/autoload.php';
 require 'src/vue/VueCreateurListe.php';
 require 'src/vue/VueAjoutItem.php';
 require 'src/vue/VueListe.php';
+require 'src/vue/VueAfficherItem.php';
 
 $app = new \Slim\App;
 $app->get('/creer/liste',function (Request $rq, Response $rs, $args):Response {
@@ -27,8 +29,13 @@ $app->get('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
     }
 });
 
-$app->get('/item/{args}',function(Request $rq, Response $rs, $args):Response{
-   return VueAfficherItem::affichageItem($rq,$rs,$args);
+$app->get('/item/{id}',function(Request $rq, Response $rs, $args):Response{
+    try{
+        echo 1;
+        return VueAfficherItem::affichageItem($rq,$rs,$args);
+    }catch(Exception $e){
+        echo $e;
+    }
 });
 
 $app->run();
