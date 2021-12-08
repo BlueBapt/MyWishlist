@@ -19,7 +19,6 @@ $app->get('/ajout/item',function (Request $rq, Response $rs, $args):Response {
 
 
 $app->get('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
-    echo "oui";
     try{
         return VueListe::affichageListe($rq,$rs,$args);
     }catch(Exception $e){
