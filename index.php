@@ -18,6 +18,10 @@ $app->get('/ajout/item',function (Request $rq, Response $rs, $args):Response {
 
 $app->get('/liste/{args}',function(Request $rq, Response $rs, $args):Response{
     return VueListe::affichageListe($rq,$rs,$args);
-}); 
+});
+
+$app->get('/item/{args}',function(Request $rq, Response $rs, $args):Response{
+   return VueAfficherItem::affichageItem($rq,$rs,$args);
+});
 
 $app->run();
