@@ -6,7 +6,7 @@ require 'vendor/autoload.php';
 require 'src/vue/VueCreateurListe.php';
 
 $app = new \Slim\App;
-$app->get('/creer',function (Request $rq, Response $rs, $args):Response {
+$app->get('/creer/liste',function (Request $rq, Response $rs, $args):Response {
     return VueCreateurListe::afficherFormulaire($rq,$rs,$args);
 });
 
