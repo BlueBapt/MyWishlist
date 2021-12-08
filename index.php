@@ -10,4 +10,9 @@ $app->get('/creer/liste',function (Request $rq, Response $rs, $args):Response {
     return VueCreateurListe::afficherFormulaire($rq,$rs,$args);
 });
 
+
+$app->get('/liste/{args}',function(Request $rq, Response $rs, $args):Response{
+    return VueListe::affichageListe($rq,$rs,$args);
+}); 
+
 $app->run();
