@@ -7,8 +7,6 @@ require_once 'vendor/autoload.php';
 class VueCreateurListe
 {
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
-        $rs->getBody()->write("ici on va ajouter une liste de souhait<br>");
-        $rs->getBody()->write("les informations sont : titre, description et date d'expiration");
         $rs->getBody()->write(<<<END
 <!DOCTYPE html>
 <html lang="fr">
@@ -17,6 +15,13 @@ class VueCreateurListe
     <title>MyWishList</title>
 </head>
 <body>
+END);
+        if(isset($_GET["description"]) && isset($_GET["titre"]) && isset($_GET["exp"])){
+            $rs->getBody()->write(<<<END
+            <div class="reussite" >L'opération est une réussite!</div>
+            END);
+        }
+        $rs->getBody()->write(<<<END
     <form class="formulaire">
         <fieldset>
             <legend id="ajt">Création d'une wishlist.</legend>
@@ -39,8 +44,16 @@ class VueCreateurListe
     <style>
         body{
         background-color: lightgray;
-        background-image: url('7ds.gif');
         background-size: cover;
+    }
+    
+    .reussite{
+        color:white;
+        width: 50%;
+        background-color: green;
+        border: 5px ridge white;
+        margin-left: 25%;
+        height: 2em;
     }
 
     form{
