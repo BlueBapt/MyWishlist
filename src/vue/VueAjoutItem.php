@@ -16,9 +16,7 @@ class VueAjoutItem
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
         if(isset($_GET["description"]) && isset($_GET["nom"]) && isset($_GET["tarif"]) && isset($_GET["token"])){
             $vai = new VueAjoutItem();
-            $idListe = $vai->idListe($_GET["token"]);
-            $vai->verifierExistanceItem($_GET["nom"], $_GET["description"]);
-            if ($vai->verifierExistance($_GET["token"])){
+            if ($vai->verifierExistance($_GET["token"]) && !$vai->verifierExistanceItem($_GET["nom"], $_GET["description"])){
                 $vai->ajouterItem();
                 $rs->getBody()->write(<<<END
                     <div class="reussite" >L'opération est une réussite!</div>
@@ -33,7 +31,35 @@ class VueAjoutItem
                         }
                     </style>
                 END);
-            } else {
+            } else if(!$vai->verifierExistance($_GET["token"])){
+                $rs->getBody()->write(<<<END
+                    <div class="reussite">La liste n'existe pas !!!</div>
+                    <style>
+                        .reussite{
+                            background-color: red;
+                            width: 50%;
+                            margin-left: 25%;
+                            color: white;
+                            text-align: center;
+                            height: 2em;
+                        }
+                    </style>
+                END);
+            }else if($vai->verifierExistanceItem($_GET["nom"], $_GET["description"])){
+                $rs->getBody()->write(<<<END
+                    <div class="reussite">L'item existe déjà !</div>
+                    <style>
+                        .reussite{
+                            background-color: red;
+                            width: 50%;
+                            margin-left: 25%;
+                            color: white;
+                            text-align: center;
+                            height: 2em;
+                        }
+                    </style>
+                END);
+            }else if(!$vai->verifierExistance($_GET["token"])){
                 $rs->getBody()->write(<<<END
                     <div class="reussite">La liste n'existe pas !!!</div>
                     <style>
