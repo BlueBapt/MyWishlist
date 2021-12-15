@@ -4,6 +4,8 @@ namespace mywishlist\vue;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \mywishlist\model\Liste as Liste;
+use \mywishlist\conf\ClassLoaderPsr4 as ClassLoaderPsr4;
+require_once 'src/conf/ClassLoaderPsr4.php';
 require_once 'vendor/autoload.php';
 require_once 'src/model/Liste.php';
 use Illuminate\Database\Capsule\Manager as DB;
@@ -58,7 +60,7 @@ END);
                 $cookie=serialize(array("nosecure".$i));
                 setcookie("token",$cookie,time()+60*60*1,"");
             }
-            
+
             try {
                 $nl->save();
             }catch(\Exception $e){

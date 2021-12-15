@@ -7,12 +7,12 @@ use \mywishlist\vue\VueCreateurListe as VueCreateurListe;
 use \mywishlist\vue\VueAjoutItem as VueAjoutItem;
 use \mywishlist\vue\VueListe as VueListe;
 use \mywishlist\vue\VueAfficherItem as VueAfficherItem;
+use \mywishlist\conf\ClassLoaderPsr4 as ClassLoaderPsr4;
+require_once 'src/conf/ClassLoaderPsr4.php';
 require 'vendor/autoload.php';
-require 'src/vue/VueCreateurListe.php';
-require 'src/vue/VueAjoutItem.php';
-require 'src/vue/VueListe.php';
-require 'src/vue/VueAfficherItem.php';
-require_once 'src/vue/VueAcceuil.php';
+
+$cl = new ClassLoaderPsr4("mywishlist\\","src/");
+$cl->register();
 
 $app = new \Slim\App;
 $app->get('/creer/liste',function (Request $rq, Response $rs, $args):Response {
