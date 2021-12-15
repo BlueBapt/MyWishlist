@@ -36,7 +36,6 @@ $app->get('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
 
 $app->get('/item/{id}',function(Request $rq, Response $rs, $args):Response{
     try{
-        echo 1;
         return VueAfficherItem::affichageItem($rq,$rs,$args);
     }catch(Exception $e){
         echo $e;
