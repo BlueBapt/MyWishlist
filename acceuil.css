@@ -19,12 +19,12 @@ body{
     margin-left: 10%;
 }
 
-#rickroll{
+.title > a{
     margin-left: 20%;
     border: 7px ridge darkgray;
 }
 
-#rickroll:hover{
+.title > a:hover{
     transform: scale(1.02);
 }
 
@@ -33,7 +33,6 @@ body{
     font-size: xx-large;
     display: grid;
     width: 100%;
-    height: 1.2em;
     margin-top: 1em;
 }
 
@@ -44,6 +43,7 @@ a{
 
 .liste{
     display: flex;
+    height: 1.2em;
     flex-direction: column;
     grid-column: 1;
     overflow: hidden;
@@ -52,6 +52,7 @@ a{
 
 .item{
     display: flex;
+    height: 1.2em;
     flex-direction: column;
     grid-column: 2;
     overflow: hidden;
@@ -64,11 +65,28 @@ a{
 }
 
 .menu > .liste:hover{
-    height: calc(4 * 100%);
     background-color: #222144;
+    height: 100%;
+    overflow: visible;
 }
 
 .menu > .item:hover{
-    height: calc(6 * 100%);
     background-color: #222144;
+    height: 100%;
+    overflow: visible;
+}
+
+.presG,
+.presL > ol,
+.presL > p,
+.presI > ol,
+.presI > p{
+    color: white;
+}
+
+.presG > h2,
+.presL > h2,
+.presI > h2{
+    color: red;
+    text-decoration: underline;
 }
