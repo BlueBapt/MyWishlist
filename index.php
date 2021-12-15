@@ -21,7 +21,7 @@ $app->get('/creer/liste',function (Request $rq, Response $rs, $args):Response {
 $app->get('/ajout/item',function (Request $rq, Response $rs, $args):Response {
     return VueAjoutItem::afficherFormulaire($rq, $rs, $args);
 });
-$app->get('/acceuil',function (Request $rq, Response $rs, $args):Response {
+$app->get('/',function (Request $rq, Response $rs, $args):Response {
     return VueAcceuil::afficherFormulaire($rq, $rs, $args);
 });
 
