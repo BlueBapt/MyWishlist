@@ -18,42 +18,52 @@ class VueCreateurListe
     <title>MyWishList</title>
 </head>
 <body>
+<a href="http://127.0.0.1/mywishlist">Retour à la page d'accueil</a>
 END);
         if(isset($_GET["description"]) && isset($_GET["titre"]) && isset($_GET["exp"])){
             $rs->getBody()->write(<<<END
             <div class="reussite" >L'opération est une réussite!</div>
             END);
-            echo "oui";
             $db = new DB();
             $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
                 'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
                 'prefix'=>''] );
             $db->setAsGlobal();
             $db->bootEloquent();
-            echo "oui";
 
             try {
                 $res = Liste::select("titre")->get();
             }catch(\Exception $e){
                 echo $e;
             }
-            echo "oui";
             $i =1;
-            foreach ($res as $r){
+            foreach ($res as $r) {
                 $i++;
             }
             $nl = new Liste();
             $nl->no=$i;
-            $nl->titre=$_GET["titre"];
-            $nl->description=$_GET["description"];
-            $nl->expiration=$_GET["exp"];
-            echo "oui";
+            $nl->user_id=$i;
+
+            $nl->titre=filter_var($_GET["titre"] ,FILTER_SANITIZE_STRING);
+            $nl->description=filter_var($_GET["description"] ,FILTER_SANITIZE_STRING);
+            $nl->expiration=filter_var($_GET["exp"] ,FILTER_SANITIZE_STRING);
+            $nl->token="nosecure".$i;
+
+            if (isset( $_COOKIE[ 'token' ] )){
+                $cookie=unserialize($_GET["token"]);
+                $cookie[]="nosecure".$i;
+                $cookie=serialize($cookie);
+                setcookie("token",$cookie,time()+60*60*1,"");
+            }else{
+                $cookie=serialize(array("nosecure".$i));
+                setcookie("token",$cookie,time()+60*60*1,"");
+            }
+            
             try {
                 $nl->save();
             }catch(\Exception $e){
                 echo $e;
             }
-            echo "oui";
         }
         $rs->getBody()->write(<<<END
     <form class="formulaire">
