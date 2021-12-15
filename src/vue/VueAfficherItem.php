@@ -20,9 +20,9 @@ class VueAfficherItem
         $item = Item::select('id', 'liste_id', 'nom', 'descr', 'img', 'tarif')->where('id', '=', $args)->get();
         foreach ($item as $c) {
             if ($c->first() != null) {
-                $rs->getBody()->write($c->id . "," . $c->liste_id . "," . $c->nom . "," . $c->descr . "," . $c->tarif . "<br>");
+                $rs->getBody()->write("ID: ".$c->id . "<br>Liste: " . $c->liste_id . "<br>Nom: " . $c->nom . "<br>Description: " . $c->descr . "<br>Tarif: " . $c->tarif . "<br>");
                 $image = '/img/'.$c->img;
-                echo "<br><img src='../$image' alt='image'>";
+                echo "<img src='../$image' width='300em'>";
             }
         }
         return $rs;
