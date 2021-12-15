@@ -22,7 +22,7 @@ class VueAfficherItem
             if ($c->first() != null) {
                 $rs->getBody()->write($c->id . "," . $c->liste_id . "," . $c->nom . "," . $c->descr . "," . $c->tarif . "<br>");
                 $image = '/img/'.$c->img;
-                echo "<img src='$image>";
+                echo "<br><img src='../$image' alt='image'>";
             }
         }
         return $rs;
