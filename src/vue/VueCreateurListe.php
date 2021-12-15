@@ -4,7 +4,6 @@ namespace mywishlist\vue;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \mywishlist\model\Liste as Liste;
-require_once 'src/conf/ClassLoaderPsr4.php';
 require_once 'src/model/Liste.php';
 use Illuminate\Database\Capsule\Manager as DB;
 class VueCreateurListe
