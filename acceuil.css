@@ -1,0 +1,74 @@
+body{
+    background-color: #2C2F33;
+}
+
+.page{
+    width: 50%;
+    margin-left: 25%;
+    display: flex;
+    flex-direction: column;
+}
+
+.title{
+    color: cyan;
+    display: flex;
+    flex-direction: row;
+}
+
+.title > h1{
+    margin-left: 10%;
+}
+
+#rickroll{
+    margin-left: 20%;
+    border: 7px ridge darkgray;
+}
+
+#rickroll:hover{
+    transform: scale(1.02);
+}
+
+.menu{
+    color: white;
+    font-size: xx-large;
+    display: grid;
+    width: 100%;
+    height: 1.2em;
+    margin-top: 1em;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
+
+.liste{
+    display: flex;
+    flex-direction: column;
+    grid-column: 1;
+    overflow: hidden;
+    background-color: orange;
+}
+
+.item{
+    display: flex;
+    flex-direction: column;
+    grid-column: 2;
+    overflow: hidden;
+    background-color: orange;
+}
+
+.menu > .liste > a:hover,
+.menu > .item > a:hover{
+    background-color: indianred;
+}
+
+.menu > .liste:hover{
+    height: calc(4 * 100%);
+    background-color: #222144;
+}
+
+.menu > .item:hover{
+    height: calc(6 * 100%);
+    background-color: #222144;
+}
