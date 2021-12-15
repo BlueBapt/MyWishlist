@@ -1,4 +1,6 @@
 <?php
+
+use mywishlist\vue\VueAcceuil;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \mywishlist\vue\VueCreateurListe as VueCreateurListe;
@@ -10,6 +12,7 @@ require 'src/vue/VueCreateurListe.php';
 require 'src/vue/VueAjoutItem.php';
 require 'src/vue/VueListe.php';
 require 'src/vue/VueAfficherItem.php';
+require_once 'src/vue/VueAcceuil.php';
 
 $app = new \Slim\App;
 $app->get('/creer/liste',function (Request $rq, Response $rs, $args):Response {
@@ -17,6 +20,9 @@ $app->get('/creer/liste',function (Request $rq, Response $rs, $args):Response {
 });
 $app->get('/ajout/item',function (Request $rq, Response $rs, $args):Response {
     return VueAjoutItem::afficherFormulaire($rq, $rs, $args);
+});
+$app->get('/acceuil',function (Request $rq, Response $rs, $args):Response {
+    return VueAcceuil::afficherFormulaire($rq, $rs, $args);
 });
 
 
