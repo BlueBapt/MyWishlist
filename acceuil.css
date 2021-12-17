@@ -10,21 +10,25 @@ body{
 }
 
 .title{
-    color: cyan;
     display: flex;
     flex-direction: row;
 }
 
 .title > h1{
+    color: cyan;
     margin-left: 10%;
 }
 
-.title > a{
+.title > #rick{
     margin-left: 20%;
     border: 7px ridge darkgray;
 }
 
-.title > a:hover{
+#ins{
+    color: red;
+}
+
+.title > #rick:hover{
     transform: scale(1.02);
 }
 
