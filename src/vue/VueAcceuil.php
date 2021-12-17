@@ -14,14 +14,14 @@ class VueAcceuil
                         <head>
                         <meta charset="utf-8" />
                         <title>My wish list</title>
-                        <link rel="stylesheet" href="acceuil.css">
+                        <link rel="stylesheet" href="css/acceuil.css">
                         </head>
                         <body>
                             <div class="page">
                                 <div class="title">
                                     <h1>My Wish List</h1>
                                     <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" id="rick"><img src="img/legend.png" width="200em"></a>
-                                    <a id="insa"><button id="ins">inscription/connexion</button></a>
+                                    <a id="insa" href="https://127.0.0.1/mywishlist/inscription"><button id="ins">inscription/connexion</button></a>
                                 </div>
                                 <div class="menu" id="menu">
                                     <div class="liste" id="liste">

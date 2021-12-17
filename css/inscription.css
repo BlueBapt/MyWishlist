@@ -1,0 +1,32 @@
+body{
+    background-color: grey;
+}
+
+.container{
+    width: 75%;
+    height: 75%;
+    margin-left: 12.5%;
+    margin-top: 5%;
+    border: solid grey 1px;
+    display: grid;
+    background-color: #2C2F33;
+}
+
+label, h1{
+    color : white;
+}
+
+hr{
+    grid-column: 2;
+}
+
+.ins{
+    grid-column: 1;
+    margin-left: 5%;
+    margin-top: 20%;
+}
+
+.co{
+    grid-column: 3;
+    margin-top: 25%;
+}
