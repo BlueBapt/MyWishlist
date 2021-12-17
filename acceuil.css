@@ -10,22 +10,40 @@ body{
 }
 
 .title{
-    display: flex;
-    flex-direction: row;
+    display: grid;
 }
 
 .title > h1{
     color: cyan;
     margin-left: 10%;
+    grid-column: 1;
+    margin-top: 20%;
 }
 
 .title > #rick{
-    margin-left: 20%;
     border: 7px ridge darkgray;
+    grid-column: 2;
+    margin-left: 10%;
+    width: 70%;
+    height: 90%;
 }
 
 #ins{
-    color: red;
+    width: 75%;
+    height: 3em;
+    margin-top: 20%;
+    margin-left: 10%;
+    border: .2em solid grey;
+}
+
+#ins:hover{
+    transform: scale(1.02);
+}
+
+#insa{
+    width: inherit;
+    border: inherit;
+    grid-column: 3;
 }
 
 .title > #rick:hover{

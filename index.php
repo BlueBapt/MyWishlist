@@ -1,6 +1,7 @@
 <?php
 require 'vendor/autoload.php';
 use mywishlist\vue\VueAcceuil;
+use mywishlist\vue\VueInscription;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \mywishlist\vue\VueCreateurListe as VueCreateurListe;
@@ -19,6 +20,9 @@ $app->get('/ajout/item',function (Request $rq, Response $rs, $args):Response {
 });
 $app->get('/',function (Request $rq, Response $rs, $args):Response {
     return VueAcceuil::afficherFormulaire($rq, $rs, $args);
+});
+$app->get('/inscription',function (Request $rq, Response $rs, $args):Response {
+    return VueInscription::afficherFormulaire($rq, $rs, $args);
 });
 
 
