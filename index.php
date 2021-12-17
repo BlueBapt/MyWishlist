@@ -2,12 +2,14 @@
 require 'vendor/autoload.php';
 use mywishlist\vue\VueAcceuil;
 use mywishlist\vue\VueInscription;
+use \mywishlist\vue\VueReservation;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \mywishlist\vue\VueCreateurListe as VueCreateurListe;
 use \mywishlist\vue\VueAjoutItem as VueAjoutItem;
 use \mywishlist\vue\VueListe as VueListe;
 use \mywishlist\vue\VueAfficherItem as VueAfficherItem;
+
 
 
 
@@ -37,6 +39,14 @@ $app->get('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
 $app->get('/item/{id}',function(Request $rq, Response $rs, $args):Response{
     try{
         return VueAfficherItem::affichageItem($rq,$rs,$args);
+    }catch(Exception $e){
+        echo $e;
+    }
+});
+
+$app->get('/reservation',function(Request $rq,Response $rs, $args):Response{
+    try{
+        return VueReservation::etatReservation($rq,$rs,$args);
     }catch(Exception $e){
         echo $e;
     }
