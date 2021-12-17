@@ -42,4 +42,12 @@ $app->get('/item/{id}',function(Request $rq, Response $rs, $args):Response{
     }
 });
 
+$app->get('/reservation',function(Request $rq,Response $rs, $args):Response{
+    try{
+        return VueReservation::etatReservation($rq,$rs,$args);
+    }catch(Exception $e){
+        echo $e;
+    }
+});
+
 $app->run();
