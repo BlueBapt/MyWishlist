@@ -20,6 +20,9 @@ $app->get('/ajout/item',function (Request $rq, Response $rs, $args):Response {
 $app->get('/',function (Request $rq, Response $rs, $args):Response {
     return VueAcceuil::afficherFormulaire($rq, $rs, $args);
 });
+$app->get('/inscription',function (Request $rq, Response $rs, $args):Response {
+    return VueAcceuil::afficherFormulaire($rq, $rs, $args);
+});
 
 
 $app->get('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
