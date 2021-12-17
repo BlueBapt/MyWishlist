@@ -18,8 +18,8 @@ class VueReservation{
         setcookie("reservation","2 heures", time() + 3600 * 2,"vue");
         $track_user_code = $_COOKIE['reservation'];
         $rs->getBody()->write(<<<END
-        echo "Attente de la reservation"."<br>";
-        echo "Temps restant : ".$track_user_code;
+        Attente de la reservation<br>
+        Temps restant : $track_user_code
         END
     );
     return $rs;
