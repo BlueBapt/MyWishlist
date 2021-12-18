@@ -20,15 +20,19 @@ class VueInscription
                         <div class="ins">
                             <h1 id="insh"><u>INSCRIPTION :</u></h1>
                             <form id="formulaire">
-                                <p class="token">
+                                <p class="login">
                                     <label for="nom">Veuillez saisir un login : *</label>
                                     <input type="text" name="login" id="login" placeholder="login" required>
                                 </p>
-                                <p class="nom">
+                                <p class="mail">
+                                    <label for="nom">Veuillez saisir votre mail : *</label>
+                                    <input type="email" name="mail" id="mail" placeholder="personnal@example.com" required>
+                                </p>
+                                <p class="mdp">
                                     <label for="nom">Entrer un mot de passe : *</label>
                                     <input type="password" name="mdp" id="mdp" placeholder="mot de passe" required>
                                 </p>
-                                <p class="nom">
+                                <p class="mdp">
                                     <label for="nom">Saisir à nouveau votre mot de passe : *</label>
                                     <input type="password" name="mdp" id="mdp" placeholder="mot de passe" required>
                                 </p>
@@ -39,13 +43,13 @@ class VueInscription
                         <div class="co">
                             <h1 id="insh"><u>CONNEXION :</u></h1>
                             <form id="formulaire">
-                                <p class="token">
+                                <p class="login">
                                     <label for="nom">Veuillez saisir un login : *</label>
-                                    <input type="text" name="login" id="login" placeholder="login" required>
+                                    <input type="text" name="loginCO" id="login" placeholder="login" required>
                                 </p>
-                                <p class="nom">
+                                <p class="mdp">
                                     <label for="nom">Entrer un mot de passe : *</label>
-                                    <input type="password" name="mdp" id="mdp" placeholder="mot de passe" required>
+                                    <input type="password" name="mdpCO" id="mdp" placeholder="mot de passe" required>
                                 </p>
                                 <input type="submit" value="Valider" id="bt">
                             </form>
@@ -54,6 +58,39 @@ class VueInscription
                 </body>
             </html>
         END);
+        if (isset($_GET["login"]) && isset($_GET["mail"]) && isset($_GET["mdp"])) {
+            $login = $_GET["login"];
+            $mail = $_GET["mail"];
+            $mdp = $_GET["mdp"];
+
+            $headers = 'From: MyWishList' . "\r\n" .
+                'Content-type: text/html; charset=iso-8859-1'.
+                'MIME-Version: 1.0'.
+                'X-Mailer: PHP/' . phpversion();
+            $message = "<html lang='fr'>
+                        <body>
+                            <div style='width: 50%; margin-left: 25%; background-color: gray;'>
+                                <div style='width: 100%; background-color: aqua; color: white; text-align: center;'>
+                                    <h1>MyWishList</h1>
+                                </div>
+                                <div style='color: white; font-size: x-large;'>
+                                    <p>Merci pour votre inscription</p>
+                                    <br>
+                                    <p>Voici quelque informations sur votre inscription :</p>
+                                    <ul>
+                                        <li>Votre login : $login</li>
+                                        <li>Voici le lien du site : https://127.0.0.1/mywishlist</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </body> 
+                        </html>";
+
+            $envoieMail = mail($mail, "Incription à MyWishList", $message, $headers);
+            if ($envoieMail)
+                echo "message evoyé";
+            //rocketleaguetd@gmail.com
+        }
         return $rs;
     }
 }
