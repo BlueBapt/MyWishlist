@@ -23,16 +23,40 @@ class VueListe{
                 'prefix'=>''] );
             $db->setAsGlobal();
             $db->bootEloquent();
+            if(isset($_GET["commentaire"]) && isset($_GET["titre"]) && isset($_GET["exp"])){
+
+            }
+
             $listes=Liste::select('no', 'user_id', 'titre', 'description', 'expiration', 'token')->where('no','=', $args)->get();
             foreach ($listes as $l){
                 if($l->first()!=null){
                     $rs->getBody()->write($l->no."<br>".$l->user_id."<br>".$l->titre."<br>".$l->description."<br>".$l->expiration."<br>".$l->token."<br>");
-                    return $rs;
                 } 
             }
+            if(isset($_SESSION["user"])){
+                $rs->getBody()->write(<<<END
+<hr> <br>
+<form>
+    <textarea name="commentaire" id="titre" placeholder="Entrez un commentaire... (140 caracteres max)" required></textarea>
+    <input type="submit" value="Valider">
+</form>
+
+END);
+            }else {
+                $rs->getBody()->write(<<<END
+<hr> <br>
+<form>
+    Connectez vous pour ajouter un commentaire!
+</form>
+
+END);
+
+            }
+
         }catch(Exception $e){
             echo $e;
         }
+        return $rs;
     } 
 }
 
