@@ -1,5 +1,7 @@
 <?php
 require 'vendor/autoload.php';
+
+use mywishlist\model\Authentification as Authentification;
 use mywishlist\vue\VueAcceuil;
 use mywishlist\vue\VueImageItem;
 use mywishlist\vue\VueInscription;
@@ -54,6 +56,17 @@ $app->get('/reservation',function(Request $rq,Response $rs, $args):Response{
     }catch(Exception $e){
         echo $e;
     }
+});
+
+$app->get('/cheat',function(Request $rq,Response $rs, $args):Response{
+    try{
+        Authentification::creerUtilisateur("Jamy","juste",10);
+        Authentification::authentification("Jamy","juste");
+        $rs->getBody()->write("c bon");
+    }catch(Exception $e){
+        echo $e;
+    }
+    return $rs;
 });
 
 $app->run();
