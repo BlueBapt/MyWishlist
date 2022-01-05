@@ -2,6 +2,8 @@
 
 namespace mywishlist\model;
 require_once  '../vendor/autoload.php';
+
+use Exception;
 use mywishlist\BaseDeDonnees as BDD;
 
 class Authentification
@@ -41,13 +43,25 @@ class Authentification
     public static function checkDroits($droitsRequis):bool{
         session_start();
         if(!isset($_SESSION["rights"])){
-            Authentification::authentification();
+            return false;
+        }else {
+            $u_droits = $_SESSION["rights"];
+            return ($u_droits >= $droitsRequis);
         }
-        $u_droits=$_SESSION["rights"];
-        return ($u_droits>=$droitsRequis);
     }
 
-    public static function creerUtilisateur($psuedo,$mdp,$droits){
-
+    public static function creerUtilisateur($psuedo,$mdp,$droits) : bool{
+        try {
+            $nl = new Utilisateur();
+            $nl->psuedo = $psuedo;
+            $mdp=$mdp.hash("md5",$mdp."énormetonmdpMeccéFOUUUUUUuIncroy4bl3");
+            $nl->mdp = $mdp;
+            $nl->droits =$droits;
+            $nl->save();
+            return true;
+        }catch(Exception $e){
+            echo $e;
+            return false;
+        }
     }
 }
