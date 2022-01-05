@@ -30,7 +30,8 @@ $app->get('/inscription',function (Request $rq, Response $rs, $args):Response {
 
 $app->get('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
     try{
-        return VueListe::affichageListe($rq,$rs,$args);
+        //return VueListe::affichageListe($rq,$rs,$args);
+        return VueListe::vueAfficherTout($rq,$rs,$args);
     }catch(Exception $e){
         echo $e;
     }
