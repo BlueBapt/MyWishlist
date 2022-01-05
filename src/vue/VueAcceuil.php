@@ -8,6 +8,9 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class VueAcceuil
 {
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
+        $user = "inscription/connexion";
+        if (isset($_SESSION["user"]))
+            $user = $_SESSION["user"];
         $rs->getBody()->write(<<<END
                     <!DOCTYPE html>
                     <html>
@@ -21,7 +24,7 @@ class VueAcceuil
                                 <div class="title">
                                     <h1>My Wish List</h1>
                                     <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" id="rick"><img src="img/legend.png" width="200em"></a>
-                                    <a id="insa" href="https://127.0.0.1/mywishlist/inscription"><button id="ins">inscription/connexion</button></a>
+                                    <a id="insa" href="https://127.0.0.1/mywishlist/inscription"><button id="ins">$user</button></a>
                                 </div>
                                 <div class="menu" id="menu">
                                     <div class="liste" id="liste">
