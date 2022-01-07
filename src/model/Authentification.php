@@ -25,9 +25,11 @@ class Authentification
         $mdp = hash("md5", $mdp . "énormetonmdpMeccéFOUUUUUUuIncroy4bl3");
         foreach ($reserv as $r) {
             if (!$trouve) {
+                echo "<br>". $r->mdp . "   |   ".$mdp;
                 if ($r->mdp === $mdp) {
                     $trouve = true;
                     self::chargerProfil($login);
+                    echo "aaaaa";
                 }
             }
         }
