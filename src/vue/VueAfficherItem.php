@@ -22,7 +22,7 @@ class VueAfficherItem
             if ($c->first() != null) {
                 $rs->getBody()->write("ID: ".$c->id . "<br>Liste: " . $c->liste_id . "<br>Nom: " . $c->nom . "<br>Description: " . $c->descr . "<br>Tarif: " . $c->tarif . "<br>");
                 $image = '/img/'.$c->img;
-                echo "<img src='../$image' width='300em'>";
+                $rs->getBody()->write( "<img src='../$image' width='300em'>");
             }
         }
         return $rs;
