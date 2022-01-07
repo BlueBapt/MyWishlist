@@ -2,12 +2,25 @@
 
 namespace mywishlist\vue;
 
+use Illuminate\Database\Capsule\Manager as DB;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class VueInscription
 {
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
+        $db = new DB();
+        $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
+            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'prefix'=>''] );
+        $db->setAsGlobal();
+        $db->bootEloquent();
+
+        if(isset($_POST["login"]) ){
+            echo($_POST["login"]);
+        }
+        //action="inscription" method="post"
+
         $rs->getBody()->write(<<<END
             <html>
                 <head>
@@ -19,7 +32,7 @@ class VueInscription
                     <div class="container">
                         <div class="ins">
                             <h1 id="insh"><u>INSCRIPTION :</u></h1>
-                            <form id="formulaire">
+                            <form id="formulaire" >
                                 <p class="login">
                                     <label for="nom">Veuillez saisir un login : *</label>
                                     <input type="text" name="login" id="login" placeholder="login" required>

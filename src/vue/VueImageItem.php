@@ -21,8 +21,7 @@ class VueImageItem
             $nom
             END
             );
-        }
-        if ($_GET["act"] === "ajout" && $vueImg->verifierExistanceItem($_GET["name"])) {
+        } elseif ($_GET["act"] === "ajout" && $vueImg->verifierExistanceItem($_GET["name"])) {
             $rs->getBody()->write(<<<END
             $ajout
             END
@@ -32,15 +31,25 @@ class VueImageItem
             $modifie
             END
             );
-        } else {
+        } elseif (isset($_GET["name"]) && isset($_GET["act"]) && !$vueImg->verifierExistanceItem($_GET["name"])) {
             $rs->getBody()->write(<<<END
-            <div class="erro"></div>
+            <div class="error">L'item n'existe pas !</div>
+                    <style>
+                        .error{
+                            background-color: red;
+                            width: 50%;
+                            margin-left: 25%;
+                            color: white;
+                            text-align: center;
+                            height: 2em;
+                        }
+                    </style>
             $nom
             END
             );
         }
-        if (isset($_GET["url"]) && $_GET["act"] === "modification")
-            $vueImg = null;
+        if (isset($_GET["url"]))
+            $vueImg->ajoutImage();
         return $rs;
     }
 
@@ -75,6 +84,34 @@ class VueImageItem
     }
 
     private function ajoutImage() {
+        $db = new DB();
+        $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
+            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'prefix'=>''] );
+        $db->setAsGlobal();
+        $db->bootEloquent();
+
+        try {
+            $res = Item::select("*")->where("id", "like", 20)->get();
+        }catch(\Exception $e){
+            echo $e;
+        }
+        $i =1;
+        foreach ($res as $r)
+            $i++;
+        echo $i;
+        $nl = new Item();
+        $nl->url=$_GET["url"];
+
+        try {
+            //$nl->update();
+            echo $nl->update();
+        }catch(\Exception $e){
+            echo $e;
+        }
+    }
+
+    private function modifierImage() {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
             'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
