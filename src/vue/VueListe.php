@@ -77,7 +77,7 @@ END);
                     $rs->getBody()->write($l->no."<br>".$l->user_id."<br>".$l->titre."<br>".$l->description."<br>".$l->expiration."<br>".$l->token."<br>");
                     foreach($item as $i){
                         $image = '/img/'.$i->img;
-                        echo "<a href='http://localhost/EXO/Projet/mywishlist/item/$i->id'</a>";
+                        echo "<a href='http://localhost/mywishlist/item/$i->id'</a>";
                         echo "<img src='../$image' width='300em'>"."<br>";
                     }
                 } 
