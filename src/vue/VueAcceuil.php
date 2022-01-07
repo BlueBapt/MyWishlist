@@ -10,8 +10,11 @@ class VueAcceuil
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
         session_start();
         $user = "inscription/connexion";
-        if (isset($_SESSION["user"]))
+        $co = "https://127.0.0.1/mywishlist/inscription";
+        if (isset($_SESSION["user"])) {
             $user = $_SESSION["user"];
+            $co = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+        }
         $rs->getBody()->write(<<<END
                     <!DOCTYPE html>
                     <html>
@@ -41,7 +44,7 @@ class VueAcceuil
                                 </div>
                             </div>
                             <h1 class="mwl">My Wish List</h1>
-                            <a id="insa" href="https://127.0.0.1/mywishlist/inscription"><button id="ins">$user</button></a>
+                            <a id="insa" href="$co"><button id="ins">$user</button></a>
                         </div>
                         <script>
                             const item = document.getElementById("item")
@@ -185,6 +188,11 @@ class VueAcceuil
                             
                             #ins{
                                 border: none;
+                                height: 2em;
+                            }
+                            
+                            
+                            #insa{
                                 height: 2em;
                             }
                             
