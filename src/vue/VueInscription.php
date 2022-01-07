@@ -98,36 +98,36 @@ END);
                         <div class="ins">
                             <h1 id="insh"><u>INSCRIPTION :</u></h1>
                             <form id="formulaire" method="post" >
-                                <p class="login">
-                                    <label for="nom">Veuillez saisir un login : *</label>
-                                    <input type="text" name="login" id="login" placeholder="login" required>
-                                </p>
-                                <p class="mail">
-                                    <label for="nom">Veuillez saisir votre mail : *</label>
-                                    <input type="email" name="mail" id="mail" placeholder="personnal@example.com" required>
-                                </p>
-                                <p class="mdp">
-                                    <label for="nom">Entrer un mot de passe : *</label>
-                                    <input type="password" name="mdp" id="mdp" placeholder="mot de passe" required>
-                                </p>
-                                <p class="mdp">
-                                    <label for="nom">Saisir à nouveau votre mot de passe : *</label>
-                                    <input type="password" name="mdp" id="mdp" placeholder="mot de passe" required>
-                                </p>
+                                <div class="insP">
+                                    <div class="insL">
+                                        <label id="inL" for="nom">Veuillez saisir un login : *</label>
+                                        <label id="inL" for="nom">Veuillez saisir votre mail : *</label>
+                                        <label id="inL" for="nom">Entrer un mot de passe : *</label>
+                                        <label id="inL" for="nom">Saisir à nouveau votre mot de passe : *</label>
+                                    </div>
+                                    <div class="insI">
+                                        <input id="inI" type="text" name="login" id="login" placeholder="login" required>
+                                        <input id="inI" type="email" name="mail" id="mail" placeholder="personnal@example.com" required>
+                                        <input id="inI" type="password" name="mdp" id="mdp" placeholder="mot de passe" required>
+                                        <input id="inI" type="password" name="mdp" id="mdp" placeholder="mot de passe" required>
+                                    </div>
+                                </div>
                                 <input type="submit" value="Valider" id="bt">
                             </form>
                         </div>
                         <div class="co">
                             <h1 id="insh"><u>CONNEXION :</u></h1>
                             <form id="formulaire" method="post">
-                                <p class="login">
-                                    <label for="nom">Veuillez saisir un login : *</label>
-                                    <input type="text" name="loginCO" id="login" placeholder="login" required>
-                                </p>
-                                <p class="mdp">
-                                    <label for="nom">Entrer un mot de passe : *</label>
-                                    <input type="password" name="mdpCO" id="mdp" placeholder="mot de passe" required>
-                                </p>
+                                <div class="coP">
+                                    <div class="coL">
+                                        <label for="nom">Veuillez saisir un login : *</label>
+                                        <label for="nom">Entrer un mot de passe : *</label>
+                                    </div>
+                                    <div class="coI">
+                                        <input type="text" name="loginCO" id="login" placeholder="login" required>
+                                        <input type="password" name="mdpCO" id="mdp" placeholder="mot de passe" required>
+                                    </div>
+                                </div>
                                 <input type="submit" value="Valider" id="bt">
                             </form>
                         </div>
