@@ -1,5 +1,88 @@
+*,
+::before,
+::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header{
+    position: relative;
+    background-color: black;
+    color: yellow;
+    z-index: 2;
+}
+
 body{
-    background-color: grey;
+    position: relative;
+    z-index: 1;
+    background-color: gray;
+}
+
+.title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 2em;
+    margin-right: 2em;
+    height: 4em;
+}
+
+.menu{
+    width: 20em;
+    height: 2em;
+    display: flex;
+    flex-direction: row;
+    margin-top: 1em;
+    justify-content: flex-end;
+}
+
+#headerA{
+    text-decoration: none;
+    color: white;
+}
+
+a{
+    margin-top: 1em;
+}
+
+.mwl{
+    margin-left: -5em;
+    margin-top: .4em;
+}
+
+.item{
+    border: .1em solid white;
+    width: 50%;
+    margin-left: 1em;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    overflow: hidden;
+    background-color: black;
+}
+
+.liste{
+    border: .1em solid white;
+    width: 50%;
+    height: 2em;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    overflow: hidden;
+    background-color: black;
+}
+
+#itemB, #listeB{
+    border: none;
+    background-color: black;
+    color: yellow;
+    cursor: pointer;
+}
+
+#insc{
+    border: none;
+    height: 2em;
 }
 
 .container{
@@ -18,15 +101,91 @@ label, h1{
 
 hr{
     grid-column: 2;
+    width: 0;
 }
 
 .ins{
     grid-column: 1;
+    width: 85%;
+    border-right: white solid .1em;
+}
+
+.ins > #formulaire > #bt{
     margin-left: 5%;
-    margin-top: 20%;
+    margin-top: 5%;
+}
+
+.ins > h1{
+    margin-top: 25%;
+    margin-left: 5%;
+}
+
+.insP{
+    margin-top: 10%;
+    margin-left: 5%;
+    display: grid;
+}
+
+.insL{
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.insL > *{
+    margin-bottom: .2em;
+}
+
+.insI{
+    grid-column: 2;
+    margin-left: -1em;
+    width: 15em;
+    display: flex;
+    flex-direction: column;
+}
+
+.insI > *{
+    margin-bottom: .2em;
 }
 
 .co{
-    grid-column: 3;
-    margin-top: 25%;
+    grid-column: 2;
+    width: 100%;
+    margin-left: -15%;
+    margin-right: 5%;
+}
+
+.co > h1{
+    margin-top: 28%;
+}
+
+.coP{
+    display: grid;
+    margin-top: 10%;
+    margin-right: 5%;
+}
+
+.coL{
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.coL > *{
+    margin-bottom: .2em;
+}
+
+.coI{
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    margin-left: -1px;
+}
+
+.coI > *{
+    margin-bottom: .2em;
+}
+
+.co > #formulaire > #bt{
+    margin-top: 5%;
 }
