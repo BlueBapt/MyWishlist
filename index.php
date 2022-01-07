@@ -1,6 +1,9 @@
 <?php
 require 'vendor/autoload.php';
+
+use mywishlist\model\Authentification as Authentification;
 use mywishlist\vue\VueAcceuil;
+use mywishlist\vue\VueImageItem;
 use mywishlist\vue\VueInscription;
 use \mywishlist\vue\VueReservation;
 use \Psr\Http\Message\ServerRequestInterface as Request;
@@ -20,6 +23,9 @@ $app->get('/creer/liste',function (Request $rq, Response $rs, $args):Response {
 $app->get('/ajout/item',function (Request $rq, Response $rs, $args):Response {
     return VueAjoutItem::afficherFormulaire($rq, $rs, $args);
 });
+$app->get('/modifie/item',function (Request $rq, Response $rs, $args):Response {
+    return VueImageItem::afficherFormulaire($rq, $rs, $args);
+});
 $app->get('/',function (Request $rq, Response $rs, $args):Response {
     return VueAcceuil::afficherFormulaire($rq, $rs, $args);
 });
@@ -30,7 +36,8 @@ $app->get('/inscription',function (Request $rq, Response $rs, $args):Response {
 
 $app->get('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
     try{
-        return VueListe::affichageListe($rq,$rs,$args);
+        //return VueListe::affichageListe($rq,$rs,$args);
+        return VueListe::vueAfficherTout($rq,$rs,$args);
     }catch(Exception $e){
         echo $e;
     }
@@ -50,6 +57,17 @@ $app->get('/reservation',function(Request $rq,Response $rs, $args):Response{
     }catch(Exception $e){
         echo $e;
     }
+});
+
+$app->get('/cheat',function(Request $rq,Response $rs, $args):Response{
+    try{
+        Authentification::creerUtilisateur("Jamy","juste",10);
+        Authentification::authentification("Jamy","juste");
+        $rs->getBody()->write("c bon");
+    }catch(Exception $e){
+        echo $e;
+    }
+    return $rs;
 });
 
 $app->run();

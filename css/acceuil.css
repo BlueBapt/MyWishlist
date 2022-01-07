@@ -1,114 +1,118 @@
-body{
-    background-color: #2C2F33;
+*,
+::before,
+::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.page{
-    width: 50%;
-    margin-left: 25%;
-    display: flex;
-    flex-direction: column;
+header{
+    position: relative;
+    background-color: black;
+    color: yellow;
+    z-index: 2;
+}
+
+body{
+    position: relative;
+    z-index: 1;
+    background-color: gray;
 }
 
 .title{
-    display: grid;
-}
-
-.title > h1{
-    color: cyan;
-    margin-left: 10%;
-    grid-column: 1;
-    margin-top: 20%;
-}
-
-.title > #rick{
-    border: 7px ridge darkgray;
-    grid-column: 2;
-    margin-left: 10%;
-    width: 70%;
-    height: 90%;
-}
-
-#ins{
-    width: 75%;
-    height: 3em;
-    margin-top: 20%;
-    margin-left: 10%;
-    border: .2em solid grey;
-}
-
-#ins:hover{
-    transform: scale(1.02);
-}
-
-#insa{
-    width: inherit;
-    border: inherit;
-    grid-column: 3;
-}
-
-.title > #rick:hover{
-    transform: scale(1.02);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 2em;
+    margin-right: 2em;
+    height: 4em;
 }
 
 .menu{
-    color: white;
-    font-size: xx-large;
-    display: grid;
-    width: 100%;
+    width: 20em;
+    height: 2em;
+    display: flex;
+    flex-direction: row;
     margin-top: 1em;
+    justify-content: flex-end;
 }
 
-a{
+#headerA{
     text-decoration: none;
     color: white;
 }
 
-.liste{
-    display: flex;
-    height: 1.2em;
-    flex-direction: column;
-    grid-column: 1;
-    overflow: hidden;
-    background-color: orange;
+a{
+    margin-top: 1em;
+}
+
+.mwl{
+    margin-left: -5em;
+    margin-top: .4em;
 }
 
 .item{
+    border: .1em solid white;
+    width: 50%;
+    margin-left: 1em;
     display: flex;
-    height: 1.2em;
     flex-direction: column;
-    grid-column: 2;
+    text-align: center;
     overflow: hidden;
-    background-color: orange;
+    background-color: black;
 }
 
-.menu > .liste > a:hover,
-.menu > .item > a:hover{
-    background-color: indianred;
+.liste{
+    border: .1em solid white;
+    width: 50%;
+    height: 2em;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    overflow: hidden;
+    background-color: black;
 }
 
-.menu > .liste:hover{
-    background-color: #222144;
-    height: 100%;
-    overflow: visible;
+#itemB, #listeB{
+    border: none;
+    background-color: black;
+    color: yellow;
+    cursor: pointer;
 }
 
-.menu > .item:hover{
-    background-color: #222144;
-    height: 100%;
-    overflow: visible;
+#ins{
+    border: none;
+    height: 2em;
 }
 
-.presG,
-.presL > ol,
-.presL > p,
-.presI > ol,
-.presI > p{
+.pres{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 5em;
+    margin-right: 5em;
+    margin-top: 5%;
+}
+
+.presG, .presL, .presI{
+    background-color: black;
     color: white;
+    width: 30%;
+    padding: .5em;
 }
 
-.presG > h2,
-.presL > h2,
-.presI > h2{
-    color: red;
+.presG > h2, .presL > h2, .presI > h2{
+    color: violet;
     text-decoration: underline;
+    margin-bottom: 1em;
 }
+
+.presG > p, .presL > p, .presI > p{
+    margin-bottom: 1em;
+}
+
+.presG > ul > li, .presL > ul > li, .presI > ul > li{
+    margin-bottom: .1em;
+    margin-left: .7em;
+}
+
