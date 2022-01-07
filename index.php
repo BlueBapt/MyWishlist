@@ -33,6 +33,10 @@ $app->get('/inscription',function (Request $rq, Response $rs, $args):Response {
     return VueInscription::afficherFormulaire($rq, $rs, $args);
 });
 
+$app->post('/inscription',function (Request $rq, Response $rs, $args):Response {
+    return VueInscription::afficherFormulaire($rq, $rs, $args);
+});
+
 
 $app->get('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
     try{
@@ -61,7 +65,7 @@ $app->get('/reservation',function(Request $rq,Response $rs, $args):Response{
 
 $app->get('/cheat',function(Request $rq,Response $rs, $args):Response{
     try{
-        Authentification::creerUtilisateur("Jamy","juste",10);
+        Authentification::creerUtilisateur("Jamy","juste","oui",10);
         Authentification::authentification("Jamy","juste");
         $rs->getBody()->write("c bon");
     }catch(Exception $e){

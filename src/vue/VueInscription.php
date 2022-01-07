@@ -2,7 +2,9 @@
 
 namespace mywishlist\vue;
 
+use Exception;
 use Illuminate\Database\Capsule\Manager as DB;
+use mywishlist\model\Authentification;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -17,7 +19,16 @@ class VueInscription
         $db->bootEloquent();
 
         if(isset($_POST["login"]) ){
-            echo($_POST["login"]);
+            try{
+                Authentification::creerUtilisateur($_POST["login"],$_POST["mdp"],$_POST["mail"],1);
+            }catch(Exception $e){
+                $rs->getBody()->write(<<<END
+<html>
+    Nom d'utilisateur déjà existant!
+</html>
+
+END);
+            }
         }
         //action="inscription" method="post"
 
@@ -32,7 +43,7 @@ class VueInscription
                     <div class="container">
                         <div class="ins">
                             <h1 id="insh"><u>INSCRIPTION :</u></h1>
-                            <form id="formulaire" >
+                            <form id="formulaire" method="post" >
                                 <p class="login">
                                     <label for="nom">Veuillez saisir un login : *</label>
                                     <input type="text" name="login" id="login" placeholder="login" required>
@@ -55,7 +66,7 @@ class VueInscription
                         <hr>
                         <div class="co">
                             <h1 id="insh"><u>CONNEXION :</u></h1>
-                            <form id="formulaire">
+                            <form id="formulaire" method="post">
                                 <p class="login">
                                     <label for="nom">Veuillez saisir un login : *</label>
                                     <input type="text" name="loginCO" id="login" placeholder="login" required>

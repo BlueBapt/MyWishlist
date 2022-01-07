@@ -62,7 +62,7 @@ class Authentification
         }
     }
 
-    public static function creerUtilisateur($psuedo,$mdp,$droits) : bool{
+    public static function creerUtilisateur($psuedo,$mdp,$email,$droits) : bool{
         $db =$db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
             'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
@@ -73,6 +73,7 @@ class Authentification
         $nl->psuedo = $psuedo;
         $mdp=hash("md5",($mdp ."énormetonmdpMeccéFOUUUUUUuIncroy4bl3"));
         $nl->mdp = $mdp;
+        $nl->email = $email;
         $nl->droits =$droits;
         $nl->save();
         return true;
