@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class VueInscription
 {
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
+        session_start();
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
             'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',

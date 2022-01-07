@@ -80,6 +80,10 @@ a{
     cursor: pointer;
 }
 
+#insa{
+    height: 2em;
+}
+
 #insc{
     border: none;
     height: 2em;

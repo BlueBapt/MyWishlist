@@ -188,6 +188,11 @@ class VueAcceuil
                                 height: 2em;
                             }
                             
+                            
+                            #insa{
+                                height: 2em;
+                            }
+                            
                             .pres{
                                 display: flex;
                                 flex-direction: row;
