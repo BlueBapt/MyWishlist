@@ -57,6 +57,7 @@ $app->get('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
 });
 
 $app->post('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
+    session_start();
     try{
         //return VueListe::affichageListe($rq,$rs,$args);
         return VueListe::vueAfficherTout($rq,$rs,$args);
