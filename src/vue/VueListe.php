@@ -1,12 +1,14 @@
 <?php
 namespace mywishlist\vue;
+require_once 'vendor/autoload.php';
+
+use Exception;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \mywishlist\model\Liste as Liste;
 use \mywishlist\model\Item as Item;
-require_once 'vendor/autoload.php';
-require_once 'src/model/Liste.php';
-require_once 'src/model/Item.php';
+use \mywishlist\model\Message as Message;
+
 use Illuminate\Database\Capsule\Manager as DB;
 
 $user = "wishmaster";
@@ -26,6 +28,19 @@ class VueListe{
             $db->setAsGlobal();
             $db->bootEloquent();
 
+            if(isset($_POST["commentaire"]) ){
+                try {
+                    $nm = new Message();
+                    $nm->contenu=filter_var($_POST["commentaire"] ,FILTER_SANITIZE_STRING);
+                    $nm->psuedo=$_SESSION["user"];
+                    $nm->no=$args["no"];
+                    $nm->save();
+                }catch(Exception $e){
+                    echo $e;
+                }
+
+            }
+
 
             $listes = Liste::select('no', 'user_id', 'titre', 'description', 'expiration', 'token')->where('no', '=', $args)->get();
             $item = Item::select('id', 'img')->where('liste_id', '=', $args)->get();
@@ -40,14 +55,20 @@ class VueListe{
                 }
             }
 
-            if (isset($_GET["commentaire"]) && isset($_GET["titre"]) && isset($_GET["exp"])) {
-
+            try {
+                $commentaires = Message::select('no', "psuedo", "idmessage", "contenu")->where("no", "=", $args)->get();
+                foreach ($commentaires as $co) {
+                    $rs->getBody()->write('<div class="message"><div class="psuedo">' . $co->psuedo . '</div><div class="contenu">' . $co->contenu . '</div></div><br>');
+                }
+            }catch(Exception $e){
+                echo $e;
             }
+
 
             if (isset($_SESSION["user"])) {
                 $rs->getBody()->write(<<<END
                 <hr> <br>
-                <form>
+                <form method="post">
                     <textarea name="commentaire" id="titre" placeholder="Entrez un commentaire... (140 caracteres max)" required></textarea>
                     <input type="submit" value="Valider">
                 </form>
@@ -61,10 +82,9 @@ class VueListe{
                 
                 END
                 );
-                $rs->getBody()->write($_SESSION["user"]);
             }
             return $rs;
-        } catch (Exception $e) {
+        }catch (Exception $e) {
             echo $e;
         }
     }
