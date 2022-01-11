@@ -31,6 +31,12 @@ $app->get('/modifie/item',function (Request $rq, Response $rs, $args):Response {
     VueHeader::afficherFormulaire($rq, $rs, $args);
     return VueImageItem::afficherFormulaire($rq, $rs, $args);
 });
+/**
+$app->post('/modifie/item',function (Request $rq, Response $rs, $args):Response {
+    VueHeader::afficherFormulaire($rq, $rs, $args);
+    return VueImageItem::afficherFormulaire($rq, $rs, $args);
+});
+ */
 $app->get('/',function (Request $rq, Response $rs, $args):Response {
     session_start();
     return VueAcceuil::afficherFormulaire($rq, $rs, $args);

@@ -11,10 +11,14 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class VueImageItem
 {
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
+        $name = null;
+        if (isset($_GET["name"]))
+            $name = $_GET["name"];
+        echo $name;
         $vueImg = new VueImageItem();
-        $ajout = $vueImg->formulaireImage("ajout");
-        $modifie = $vueImg->formulaireImage("modifie");
         $nom = $vueImg->formulaireImage("nom");
+        if (isset($_GET["name"]))
+            $idItem = $vueImg->idItem($_GET["name"]);
 
         if (!isset($_GET["name"]) && !isset($_GET["act"])){
             $rs->getBody()->write(<<<END
@@ -22,13 +26,15 @@ class VueImageItem
             END
             );
         } elseif ($_GET["act"] === "ajout" && $vueImg->verifierExistanceItem($_GET["name"])) {
+            $ajout = $vueImg->formulaireImage("ajout");
             $rs->getBody()->write(<<<END
-            $ajout
+                $ajout
             END
             );
-        } elseif ($_GET["act"] === "modification" && $vueImg->verifierExistanceItem($_GET["name"])) {
+        } elseif ($_GET["act"] === "m" && $vueImg->verifierExistanceItem($_GET["name"])) {
+            $modifie = $vueImg->formulaireImage("modifie");
             $rs->getBody()->write(<<<END
-            $modifie
+                $modifie
             END
             );
         } elseif (isset($_GET["name"]) && isset($_GET["act"]) && !$vueImg->verifierExistanceItem($_GET["name"])) {
@@ -83,7 +89,7 @@ class VueImageItem
         return $i;
     }
 
-    private function ajoutImage() {
+    private function idItem(String $nom) : int {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
             'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
@@ -92,7 +98,32 @@ class VueImageItem
         $db->bootEloquent();
 
         try {
-            $res = Item::select("*")->where("id", "like", 20)->get();
+            $res = Item::where("nom", "=", "$nom")->get();
+        }catch(\Exception $e){
+            echo $e;
+        }
+        $i = 0;
+        foreach ($res as $r => $s){
+            $t = explode(",", $s);
+            $tn = $t[0];
+            $t = explode(":", $tn);
+            $tn = $t[1];
+            $i = $tn;
+        }
+        return $i;
+    }
+
+    private function ajoutImage() {
+        $db = new DB();
+        $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
+            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'prefix'=>''] );
+        $db->setAsGlobal();
+        $db->bootEloquent();
+
+        $id = $this->idItem($_GET['name']);
+        try {
+            $res = Item::select("*")->where("id", "like", "id")->get();
         }catch(\Exception $e){
             echo $e;
         }
@@ -109,6 +140,7 @@ class VueImageItem
         }catch(\Exception $e){
             echo $e;
         }
+        echo "test";
     }
 
     private function modifierImage() {
@@ -146,6 +178,9 @@ class VueImageItem
     }
 
     private function formulaireImage(string $act):string{
+        $name = "Rubik's cube";
+        if (isset($_GET["name"]))
+            $name = $_GET["name"];
         $ajout = "
         <!DOCTYPE html>
             <html lang='fr'>
@@ -160,6 +195,7 @@ class VueImageItem
                         <p class='image'>
                             <label for='image'>Entrer votre url ou chemin : </label>
                             <input type='text' name='image' id='image' placeholder='URL ou chemin *' required>
+                            <input type='hidden' name='act' id='image' value='ajout'>
                         </p>
                         <input type='submit' value='Valider' id='bt'>
                     </fieldset>
@@ -228,6 +264,8 @@ class VueImageItem
                         <p class='image'>
                             <label for='image'>Entrer votre url ou chemin : </label>
                             <input type='text' name='image' id='image' placeholder='URL ou chemin *' required>
+                            <input type='hidden' name='act' id='image' value='m'>
+                            <input type='hidden' name='name' id='image' value='$name'>
                         </p>
                         <input type='submit' value='Valider' id='bt'>
                     </fieldset>
@@ -302,7 +340,7 @@ class VueImageItem
                             <p>Ajout</p>
                             <input type='radio' name='act' id='name' value='ajout' required>
                             <p>Modification</p>
-                            <input type='radio' name='act' id='name' value='modification' required>
+                            <input type='radio' name='act' id='name' value='m' required>
                         </div>
                         <input type='submit' value='Valider' id='bt'>
                     </fieldset>
