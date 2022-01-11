@@ -15,8 +15,8 @@ $mdp = "TropFort54";
 class VueReservation{
 
     public static function etatReservation(Request $rq, Response $rs, $args):Response{
-        setcookie("reservation","2 Heures", time() + 3600 * 2,"vue");
-        $track_user_code = $_COOKIE['reservation'];
+        setcookie("reserv","2 Heures", time() + 3600 * 2,"vue");
+        $track_user_code = $_COOKIE['reserv'];
        
         $rs->getBody()->write(<<<END
             Attente de la reservation<br>
