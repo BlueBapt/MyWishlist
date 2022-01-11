@@ -8,7 +8,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class VueAcceuil
 {
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
-        session_start();
         $user = "inscription/connexion";
         $co = "https://127.0.0.1/mywishlist/inscription";
         if (isset($_SESSION["user"])) {

@@ -19,28 +19,35 @@ use \mywishlist\vue\VueAfficherItem as VueAfficherItem;
 
 $app = new \Slim\App;
 $app->get('/creer/liste',function (Request $rq, Response $rs, $args):Response {
+    session_start();
     return VueCreateurListe::afficherFormulaire($rq,$rs,$args);
 });
 $app->get('/ajout/item',function (Request $rq, Response $rs, $args):Response {
+    session_start();
     return VueAjoutItem::afficherFormulaire($rq, $rs, $args);
 });
 $app->get('/modifie/item',function (Request $rq, Response $rs, $args):Response {
+    session_start();
     VueHeader::afficherFormulaire($rq, $rs, $args);
     return VueImageItem::afficherFormulaire($rq, $rs, $args);
 });
 $app->get('/',function (Request $rq, Response $rs, $args):Response {
+    session_start();
     return VueAcceuil::afficherFormulaire($rq, $rs, $args);
 });
 $app->get('/inscription',function (Request $rq, Response $rs, $args):Response {
+    session_start();
     return VueInscription::afficherFormulaire($rq, $rs, $args);
 });
 
 $app->post('/inscription',function (Request $rq, Response $rs, $args):Response {
+    session_start();
     return VueInscription::afficherFormulaire($rq, $rs, $args);
 });
 
 
 $app->get('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
+    session_start();
     try{
         //return VueListe::affichageListe($rq,$rs,$args);
         return VueListe::vueAfficherTout($rq,$rs,$args);
@@ -59,6 +66,7 @@ $app->post('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
 });
 
 $app->get('/item/{id}',function(Request $rq, Response $rs, $args):Response{
+    session_start();
     try{
         return VueAfficherItem::affichageItem($rq,$rs,$args);
     }catch(Exception $e){
@@ -67,6 +75,7 @@ $app->get('/item/{id}',function(Request $rq, Response $rs, $args):Response{
 });
 
 $app->get('/reservation',function(Request $rq,Response $rs, $args):Response{
+    session_start();
     try{
         return VueReservation::etatReservation($rq,$rs,$args);
     }catch(Exception $e){
@@ -75,9 +84,21 @@ $app->get('/reservation',function(Request $rq,Response $rs, $args):Response{
 });
 
 $app->get('/cheat',function(Request $rq,Response $rs, $args):Response{
+    session_start();
     try{
         Authentification::creerUtilisateur("Jamy","juste","oui",10);
         Authentification::authentification("Jamy","juste");
+        $rs->getBody()->write("c bon");
+    }catch(Exception $e){
+        echo $e;
+    }
+    return $rs;
+});
+
+$app->get('/deco',function(Request $rq,Response $rs, $args):Response{
+    session_start();
+    try{
+        unset($_SESSION["user"]);
         $rs->getBody()->write("c bon");
     }catch(Exception $e){
         echo $e;

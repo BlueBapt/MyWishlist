@@ -4,6 +4,7 @@ namespace mywishlist\model;
 
 require_once "src/BaseDeDonnees.php";
 
+use Exception;
 use Illuminate\Database\Capsule\Manager as DB;
 
 class Authentification
@@ -25,11 +26,9 @@ class Authentification
         $mdp = hash("md5", $mdp . "énormetonmdpMeccéFOUUUUUUuIncroy4bl3");
         foreach ($reserv as $r) {
             if (!$trouve) {
-                echo "<br>". $r->mdp . "   |   ".$mdp;
                 if ($r->mdp === $mdp) {
                     $trouve = true;
                     self::chargerProfil($login);
-                    echo "aaaaa";
                 }
             }
         }
@@ -37,7 +36,6 @@ class Authentification
     }
 
     private static function chargerProfil($login){
-        session_start();
         if (isset($_SESSION["user"])) {
             unset($_SESSION["user"]);
         }

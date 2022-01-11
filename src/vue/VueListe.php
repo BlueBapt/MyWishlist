@@ -19,7 +19,6 @@ class VueListe{
     public static function vueAfficherTout(Request $rq, Response $rs, $args)
     {
         try {
-            session_start();
             $dsn = 'mysql:host=localhost;dbname=mywishlist';
             $db = new DB();
             $db->addConnection(['driver' => 'mysql', 'host' => 'localhost', 'database' => 'mywishlist',

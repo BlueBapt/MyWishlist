@@ -11,7 +11,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class VueInscription
 {
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
-        session_start();
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
             'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
@@ -19,13 +18,25 @@ class VueInscription
         $db->setAsGlobal();
         $db->bootEloquent();
 
-        if(isset($_POST["login"]) ){
+        if(isset($_POST["mail"]) ){
             try{
                 Authentification::creerUtilisateur($_POST["login"],$_POST["mdp"],$_POST["mail"],1);
+                Authentification::authentification($_POST["login"],$_POST["mdp"]);
             }catch(Exception $e){
                 $rs->getBody()->write(<<<END
 <html>
-    Nom d'utilisateur déjà existant!
+    <h3>Nom d'utilisateur déjà existant!</h3>
+</html>
+
+END);
+            }
+        }else if(isset($_POST["loginCO"])){
+            try{
+                Authentification::authentification($_POST["loginCO"],$_POST["mdpCO"]);
+            }catch(Exception $e){
+                $rs->getBody()->write(<<<END
+<html>
+    <h3>Mauvais identifiant ou mot de passe</h3>
 </html>
 
 END);
@@ -120,8 +131,8 @@ END);
                             <form id="formulaire" method="post">
                                 <div class="coP">
                                     <div class="coL">
-                                        <label for="nom">Veuillez saisir un login : *</label>
-                                        <label for="nom">Entrer un mot de passe : *</label>
+                                        <label for="nom">Veuillez saisir votre login : *</label>
+                                        <label for="nom">Entrer votre mot de passe : *</label>
                                     </div>
                                     <div class="coI">
                                         <input type="text" name="loginCO" id="login" placeholder="login" required>
