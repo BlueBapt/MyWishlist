@@ -21,8 +21,10 @@ class VueAfficherItem
         foreach ($item as $c) {
             if ($c->first() != null) {
                 $rs->getBody()->write("ID: ".$c->id . "<br>Liste: " . $c->liste_id . "<br>Nom: " . $c->nom . "<br>Description: " . $c->descr . "<br>Tarif: " . $c->tarif . "<br>");
-                $image = '/img/'.$c->img;
-                $rs->getBody()->write( "<img src='../$image' width='300em'>");
+                $image = '../img/'.$c->img;
+                if (str_starts_with($c->img, "http"))
+                    $image = $c->img;
+                $rs->getBody()->write( "<img src='$image' width='300em'>");
             }
         }
         return $rs;

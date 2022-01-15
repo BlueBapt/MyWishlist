@@ -6,6 +6,7 @@ use mywishlist\vue\VueAcceuil;
 use mywishlist\vue\VueHeader;
 use mywishlist\vue\VueImageItem;
 use mywishlist\vue\VueInscription;
+use mywishlist\vue\VueItemSup;
 use \mywishlist\vue\VueReservation;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
@@ -28,8 +29,42 @@ $app->get('/ajout/item',function (Request $rq, Response $rs, $args):Response {
 });
 $app->get('/modifie/item',function (Request $rq, Response $rs, $args):Response {
     session_start();
-    VueHeader::afficherFormulaire($rq, $rs, $args);
-    return VueImageItem::afficherFormulaire($rq, $rs, $args);
+    try {
+        VueHeader::afficherFormulaire($rq, $rs, $args);
+        return VueImageItem::afficherFormulaire($rq, $rs, $args);
+    }catch (\Throwable $e){
+        echo $e;
+    }
+});
+$app->post('/modifie/item',function (Request $rq, Response $rs, $args):Response {
+    try {
+        session_start();
+        VueHeader::afficherFormulaire($rq, $rs, $args);
+        return VueImageItem::afficherFormulaire($rq, $rs, $args);
+    }catch (\Throwable $e){
+        echo $e;
+    }
+    return $rs;
+});
+$app->get('/sup/item',function (Request $rq, Response $rs, $args):Response {
+    try {
+        session_start();
+        VueHeader::afficherFormulaire($rq, $rs, $args);
+        VueItemSup::afficherFormulaire($rq, $rs, $args);
+    }catch (\Throwable $e){
+        echo $e;
+    }
+    return $rs;
+});
+$app->post('/sup/item',function (Request $rq, Response $rs, $args):Response {
+    try {
+        session_start();
+        VueHeader::afficherFormulaire($rq, $rs, $args);
+        VueItemSup::afficherFormulaire($rq, $rs, $args);
+    }catch (\Throwable $e){
+        echo $e;
+    }
+    return $rs;
 });
 /**
 $app->post('/modifie/item',function (Request $rq, Response $rs, $args):Response {
