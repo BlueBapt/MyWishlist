@@ -10,29 +10,34 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class VueImageItem
 {
+    public string $name;
+
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
         $vueImg = new VueImageItem();
         $nom = $vueImg->formulaireImage("nom");
 
+        if (isset($_POST["name"]))
+            $_SESSION["name"] = $_POST["name"];
+
         if (!isset($_POST["name"]) && !isset($_POST["act"]) && !isset($_POST["img"])){
-            echo "ah";
+            unset($_SESSION["name"]);
             $rs->getBody()->write(<<<END
             $nom
             END
             );
-        } elseif ($_POST["act"] === "ajout" && $vueImg->verifierExistanceItem($_POST["name"]) && !isset($_POST["img"])) {
+        } elseif ($_POST["act"] === "ajout" && $vueImg->verifierExistanceItem($_SESSION["name"]) && !isset($_POST["img"])) {
             $ajout = $vueImg->formulaireImage("ajout");
             $rs->getBody()->write(<<<END
                 $ajout
             END
             );
-        } elseif ($_POST["act"] === "m" && $vueImg->verifierExistanceItem($_POST["name"]) && !isset($_POST["img"])) {
+        } elseif ($_POST["act"] === "m" && $vueImg->verifierExistanceItem($_SESSION["name"]) && !isset($_POST["img"])) {
             $modifie = $vueImg->formulaireImage("modifie");
             $rs->getBody()->write(<<<END
                 $modifie
             END
             );
-        } elseif (isset($_POST["name"]) && isset($_POST["act"]) && !$vueImg->verifierExistanceItem($_POST["name"]) && !isset($_POST["img"])) {
+        } elseif (isset($_POST["name"]) && isset($_POST["act"]) && !$vueImg->verifierExistanceItem($_SESSION["name"]) && !isset($_POST["img"])) {
             $rs->getBody()->write(<<<END
             <div class="error">L'item n'existe pas !</div>
                     <style>
@@ -49,8 +54,26 @@ class VueImageItem
             END
             );
         }
-        if (isset($_POST["img"]))
+        if (isset($_POST["img"]) && $_POST["act"] == "ajout") {
             $vueImg->ajoutImage();
+            $rs->getBody()->write(<<<END
+            $nom
+            END
+            );
+            unset($_POST["act"]);
+            unset($_POST["img"]);
+            unset($_SESSION["name"]);
+        }
+        if (isset($_POST["img"]) && $_POST["act"] == "m") {
+            $vueImg->modifierImage();
+            $rs->getBody()->write(<<<END
+            $nom
+            END
+            );
+            unset($_POST["act"]);
+            unset($_POST["img"]);
+            unset($_SESSION["name"]);
+        }
         return $rs;
     }
 
@@ -116,7 +139,7 @@ class VueImageItem
         $db->setAsGlobal();
         $db->bootEloquent();
 
-        $id = $this->idItem($_POST["img"]);
+        $id = $this->idItem($_SESSION["name"]);
         echo "id : $id <br>";
         try {
             $res = Item::select("*")->where("id", "like", $id)->get();
@@ -135,13 +158,12 @@ class VueImageItem
 
 
         try {
-            //$nl->save();
+            $nl->save();
         }catch(\Exception $e){
             echo $e;
         }
     }
 
-    /**
     private function modifierImage() {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
@@ -150,37 +172,32 @@ class VueImageItem
         $db->setAsGlobal();
         $db->bootEloquent();
 
+        $id = $this->idItem($_SESSION["name"]);
+        echo "id : $id <br>";
         try {
-            $res = Item::select("*")->get();
+            $res = Item::select("*")->where("id", "like", $id)->get();
         }catch(\Exception $e){
             echo $e;
         }
-        $i =1;
-        foreach ($res as $r)
-            $i++;
+        $nl = Item::where("id", "=", $id)->first();
+        foreach ($res as $r) {
+            $nl->nom = $r->nom;
+            $nl->descr = $r->descr;
+            $nl->liste_id = $r->liste_id;
+            $nl->url = $r->url;
+            $nl->tarif = $r->tarif;
+        }
+        $nl->img=$_POST["img"];
 
-        $nl = new Item();
-        $nl->id=$i;
-        $nl->liste_id=$this->idListe($_GET["token"]);
-        $nl->nom=$_GET["nom"];
-        $nl->descr=$_GET["description"];
-        if (isset($_GET["img"]))
-            $nl->img=$_GET["img"];
-        $nl->tarif=$_GET["tarif"];
 
         try {
-            if (!$this->verifierExistanceItem($_GET["nom"], $_GET["description"]))
-                $nl->save();
+            $nl->save();
         }catch(\Exception $e){
             echo $e;
         }
     }
-     */
 
     private function formulaireImage(string $act):string{
-        $name = "Rubik's cube";
-        if (isset($_POST["name"]))
-            $name = $_POST["name"];
         $ajout = "
         <!DOCTYPE html>
             <html lang='fr'>
@@ -265,7 +282,6 @@ class VueImageItem
                             <label for='image'>Entrer votre url ou chemin : </label>
                             <input type='text' name='img' id='image' placeholder='URL ou chemin *' required>
                             <input type='hidden' name='act' id='image' value='m'>
-                            <input type='hidden' name='name' id='image' value='$name'>
                         </p>
                         <input type='submit' value='Valider' id='bt'>
                     </fieldset>
