@@ -2,8 +2,6 @@
 
 namespace mywishlist\model;
 
-require_once "src/BaseDeDonnees.php";
-
 use Exception;
 use Illuminate\Database\Capsule\Manager as DB;
 
