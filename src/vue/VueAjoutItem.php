@@ -311,7 +311,7 @@ class VueAjoutItem
                     const url = document.getElementById("btnURL")
                     const form = document.getElementById("field")
                     url.addEventListener("click", () => {
-                        form.innerHTML += '<input type="url" name="url" placeholder="URL" id="url">'
+                        form.innerHTML += '<input type="text" name="url" placeholder="URL" id="img">'
                     })
                 </script>
             </body>
@@ -440,8 +440,8 @@ class VueAjoutItem
         $nl->liste_id=$this->idListe($_GET["token"]);
         $nl->nom=$_GET["nom"];
         $nl->descr=$_GET["description"];
-        if (isset($_GET["url"]))
-            $nl->url=$_GET["url"];
+        if (isset($_GET["img"]))
+            $nl->img=$_GET["img"];
         $nl->tarif=$_GET["tarif"];
 
          try {

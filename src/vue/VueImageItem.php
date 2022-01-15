@@ -11,33 +11,28 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class VueImageItem
 {
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
-        $name = null;
-        if (isset($_GET["name"]))
-            $name = $_GET["name"];
-        echo $name;
         $vueImg = new VueImageItem();
         $nom = $vueImg->formulaireImage("nom");
-        if (isset($_GET["name"]))
-            $idItem = $vueImg->idItem($_GET["name"]);
 
-        if (!isset($_GET["name"]) && !isset($_GET["act"])){
+        if (!isset($_POST["name"]) && !isset($_POST["act"]) && !isset($_POST["img"])){
+            echo "ah";
             $rs->getBody()->write(<<<END
             $nom
             END
             );
-        } elseif ($_GET["act"] === "ajout" && $vueImg->verifierExistanceItem($_GET["name"])) {
+        } elseif ($_POST["act"] === "ajout" && $vueImg->verifierExistanceItem($_POST["name"]) && !isset($_POST["img"])) {
             $ajout = $vueImg->formulaireImage("ajout");
             $rs->getBody()->write(<<<END
                 $ajout
             END
             );
-        } elseif ($_GET["act"] === "m" && $vueImg->verifierExistanceItem($_GET["name"])) {
+        } elseif ($_POST["act"] === "m" && $vueImg->verifierExistanceItem($_POST["name"]) && !isset($_POST["img"])) {
             $modifie = $vueImg->formulaireImage("modifie");
             $rs->getBody()->write(<<<END
                 $modifie
             END
             );
-        } elseif (isset($_GET["name"]) && isset($_GET["act"]) && !$vueImg->verifierExistanceItem($_GET["name"])) {
+        } elseif (isset($_POST["name"]) && isset($_POST["act"]) && !$vueImg->verifierExistanceItem($_POST["name"]) && !isset($_POST["img"])) {
             $rs->getBody()->write(<<<END
             <div class="error">L'item n'existe pas !</div>
                     <style>
@@ -54,7 +49,7 @@ class VueImageItem
             END
             );
         }
-        if (isset($_GET["url"]))
+        if (isset($_POST["img"]))
             $vueImg->ajoutImage();
         return $rs;
     }
@@ -121,28 +116,32 @@ class VueImageItem
         $db->setAsGlobal();
         $db->bootEloquent();
 
-        $id = $this->idItem($_GET['name']);
+        $id = $this->idItem($_POST["img"]);
+        echo "id : $id <br>";
         try {
-            $res = Item::select("*")->where("id", "like", "id")->get();
+            $res = Item::select("*")->where("id", "like", $id)->get();
         }catch(\Exception $e){
             echo $e;
         }
-        $i =1;
-        foreach ($res as $r)
-            $i++;
-        echo $i;
-        $nl = new Item();
-        $nl->url=$_GET["url"];
+        $nl = Item::where("id", "=", $id)->first();
+        foreach ($res as $r) {
+            $nl->nom = $r->nom;
+            $nl->descr = $r->descr;
+            $nl->liste_id = $r->liste_id;
+            $nl->url = $r->url;
+            $nl->tarif = $r->tarif;
+        }
+        $nl->img=$_POST["img"];
+
 
         try {
-            //$nl->update();
-            echo $nl->update();
+            //$nl->save();
         }catch(\Exception $e){
             echo $e;
         }
-        echo "test";
     }
 
+    /**
     private function modifierImage() {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
@@ -165,8 +164,8 @@ class VueImageItem
         $nl->liste_id=$this->idListe($_GET["token"]);
         $nl->nom=$_GET["nom"];
         $nl->descr=$_GET["description"];
-        if (isset($_GET["url"]))
-            $nl->url=$_GET["url"];
+        if (isset($_GET["img"]))
+            $nl->img=$_GET["img"];
         $nl->tarif=$_GET["tarif"];
 
         try {
@@ -176,11 +175,12 @@ class VueImageItem
             echo $e;
         }
     }
+     */
 
     private function formulaireImage(string $act):string{
         $name = "Rubik's cube";
-        if (isset($_GET["name"]))
-            $name = $_GET["name"];
+        if (isset($_POST["name"]))
+            $name = $_POST["name"];
         $ajout = "
         <!DOCTYPE html>
             <html lang='fr'>
@@ -189,12 +189,12 @@ class VueImageItem
                 <title>MyWishList</title>
             </head>
             <body>
-                <form id='formulaire'>
+                <form id='formulaire' method='post'>
                     <fieldset id='field'>
                         <legend id='ajt'>Ajout d'image à un item.</legend>
                         <p class='image'>
                             <label for='image'>Entrer votre url ou chemin : </label>
-                            <input type='text' name='image' id='image' placeholder='URL ou chemin *' required>
+                            <input type='text' name='img' id='image' placeholder='URL ou chemin *' required>
                             <input type='hidden' name='act' id='image' value='ajout'>
                         </p>
                         <input type='submit' value='Valider' id='bt'>
@@ -258,12 +258,12 @@ class VueImageItem
                 <title>MyWishList</title>
             </head>
             <body>
-                <form id='formulaire'>
+                <form id='formulaire' method='post'>
                     <fieldset id='field'>
                         <legend id='ajt'>Modification d'image à d'un item.</legend>
                         <p class='image'>
                             <label for='image'>Entrer votre url ou chemin : </label>
-                            <input type='text' name='image' id='image' placeholder='URL ou chemin *' required>
+                            <input type='text' name='img' id='image' placeholder='URL ou chemin *' required>
                             <input type='hidden' name='act' id='image' value='m'>
                             <input type='hidden' name='name' id='image' value='$name'>
                         </p>
@@ -328,7 +328,7 @@ class VueImageItem
                 <title>MyWishList</title>
             </head>
             <body>
-                <form id='formulaire'>
+                <form id='formulaire' method='post'>
                     <fieldset id='field'>
                         <legend id='ajt'>Modification d'image à d'un item.</legend>
                         <p class='nom'>

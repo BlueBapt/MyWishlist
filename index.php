@@ -28,8 +28,22 @@ $app->get('/ajout/item',function (Request $rq, Response $rs, $args):Response {
 });
 $app->get('/modifie/item',function (Request $rq, Response $rs, $args):Response {
     session_start();
-    VueHeader::afficherFormulaire($rq, $rs, $args);
-    return VueImageItem::afficherFormulaire($rq, $rs, $args);
+    try {
+        VueHeader::afficherFormulaire($rq, $rs, $args);
+        return VueImageItem::afficherFormulaire($rq, $rs, $args);
+    }catch (\Throwable $e){
+        echo $e;
+    }
+});
+$app->post('/modifie/item',function (Request $rq, Response $rs, $args):Response {
+    try {
+        session_start();
+        VueHeader::afficherFormulaire($rq, $rs, $args);
+        return VueImageItem::afficherFormulaire($rq, $rs, $args);
+    }catch (\Throwable $e){
+        echo $e;
+    }
+    return $rs;
 });
 /**
 $app->post('/modifie/item',function (Request $rq, Response $rs, $args):Response {
