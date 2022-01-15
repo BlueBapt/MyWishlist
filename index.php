@@ -1,6 +1,7 @@
 <?php
 require 'vendor/autoload.php';
 
+use mywishlist\controller\ConnexionController;
 use mywishlist\model\Authentification as Authentification;
 use mywishlist\vue\VueAcceuil;
 use mywishlist\vue\VueHeader;
@@ -78,12 +79,12 @@ $app->get('/',function (Request $rq, Response $rs, $args):Response {
 });
 $app->get('/inscription',function (Request $rq, Response $rs, $args):Response {
     session_start();
-    return VueInscription::afficherFormulaire($rq, $rs, $args);
+    return ConnexionController::pageConnexion($rq,$rs,$args);
 });
 
 $app->post('/inscription',function (Request $rq, Response $rs, $args):Response {
     session_start();
-    return VueInscription::afficherFormulaire($rq, $rs, $args);
+    return ConnexionController::seConnecter($rq, $rs, $args);
 });
 
 
