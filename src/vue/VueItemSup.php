@@ -16,7 +16,15 @@ class VueItemSup
 
         if (isset($_POST["name"]))
             $_SESSION["name"] = $_POST["name"];
-        echo $_SESSION["name"];
+        if (isset($_SESSION["name"]) && !$vue->verifierExistanceItem($_SESSION["name"])) {
+            unset($_SESSION["name"]);
+            $notExist = $vue->form("inexist");
+            $rs->getBody()->write(<<<END
+                $notExist
+            END
+            );
+        }
+
         if (!isset($_SESSION["name"])){
             $rs->getBody()->write(<<<END
                 $sup
@@ -29,16 +37,16 @@ class VueItemSup
                 $res
             END
             );
-        } elseif (isset($_SESSION["name"]) && !$vue->verifierExistanceItem($_SESSION["name"])) {
-            $notExist = $vue->form("inexist");
-            $rs->getBody()->write(<<<END
-                $notExist
-            END
-            );
-            unset($_SESSION["name"]);
-        } elseif (isset($_SESSION["name"]) && isset($_POST["act"]) && $_POST["act"] == "yes") {
-            $vue->sup($vue->idItem($_SESSION["name"]));
         }
+        if (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "yes") {
+            $vue->sup($vue->idItem($_SESSION["name"]));
+            header(1);
+        } elseif (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "no"){
+            unset($_SESSION["name"]);
+            header(1);
+        }
+        if (isset($_POST["verif"]) && $_POST["verif"] == "no" || isset($_POST["verif"]) && $_POST["verif"] == "yes")
+            header(1);
 
         return $rs;
     }
@@ -122,6 +130,9 @@ class VueItemSup
     }
 
     private function form(string $name) : string{
+        $val = null;
+        if (isset($_SESSION["name"]))
+            $val = $_SESSION["name"];
         $acceuil = "<!DOCTYPE html>
             <html lang='fr'>
             <head>
@@ -135,7 +146,6 @@ class VueItemSup
                         <p class='nom'>
                             <label for='name'>Entrer le nom de l'item : </label>
                             <input type='text' name='name' id='name' placeholder='Nom de l item' required>
-                            <input type='hidden' name='act' id='name' value='yes' required>
                         </p>
                         <input type='submit' value='Valider' id='bt'>
                     </fieldset>
@@ -195,18 +205,21 @@ class VueItemSup
             </body>
             </html>";
         $notExist = "
-            <div id='error' style='background-color: red;width: 50%; height: 2em; margin-left: 25%;margin-top: -16.5em;text-align: center; color: white'>
-                <p>L'item n'existe pas ou a été supprimer</p>
+            <div id='error' style='background-color: red;width: 50%; height: 2em; margin-left: 25%;text-align: center; color: white'>
+                <p>L'item n'existe pas ou a été supprimé</p>
             </div>
         ";
-        $val = null;
-        if (isset($_SESSION["name"]))
-            $val = $_SESSION["name"];
+        $existPlus = "
+            <div id='error' style='background-color: green;width: 50%; height: 2em; margin-left: 25%;text-align: center; color: white'>
+                <p>L'item a été suprimé</p>
+            </div>
+        ";
         $v = "
         <!DOCTYPE html>
             <html lang='fr'>
             <head>
                 <meta charset='UTF-8'>
+                <meta http-equiv='refresh' content='3'>
                 <title>MyWishList</title>
             </head>
             <body>
@@ -215,8 +228,16 @@ class VueItemSup
                         <legend id='ajt'>Suppression d'un item.</legend>
                         <p class='nom'>
                             <label for='name'>Etes-vous sûre ? : </label>
-                            <input type='radio' name='verif' id='name' required>
-                            <input type='radio' name='verif' id='name' required>
+                            <div class='radio'>
+                                <div>
+                                    <p style='margin-right: 1em'>Oui</p>
+                                    <input type='radio' name='verif' id='name' value='yes' required>
+                                </div>
+                                <div>
+                                    <p style='margin-right: 1em'>Non</p>
+                                    <input type='radio' name='verif' id='name' value='no' required>
+                                </div>
+                            </div>
                             <input type='hidden' name='$val' id='name' required>
                         </p>
                         <input type='submit' value='Valider' id='bt'>
@@ -268,11 +289,22 @@ class VueItemSup
                                 width: 50%;
                             }
             
-                #bt:hover, #btnURL:hover{
-            border-radius: .2em;
-            transform: scale(1.02);
-            }
-            </style>
+                            #bt:hover, #btnURL:hover{
+                        border-radius: .2em;
+                        transform: scale(1.02);
+                        }
+                        
+                        .radio{
+                            display: flex;
+                            flex-direction: column; 
+                        }
+                        .radio>*{
+                            display: flex;
+                            flex-direction: row;
+                            color: white;                           
+                        }
+                        
+                </style>
              
             </body>
             </html>";
@@ -281,11 +313,13 @@ class VueItemSup
             return $acceuil;
         elseif ($name == "inexist")
             return $notExist;
-        elseif ($name == "verif")
+        elseif ($name == "verif") {
             return $v;
+        }
+        elseif ($name == "ep")
+            return $existPlus;
         else {
-            return $name;
-            //return "error";
+            return "error";
         }
     }
 }
