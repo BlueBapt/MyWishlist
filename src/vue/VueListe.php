@@ -19,7 +19,6 @@ class VueListe{
     public static function vueAfficherTout(Request $rq, Response $rs, $args)
     {
         try {
-            $dsn = 'mysql:host=localhost;dbname=mywishlist';
             $db = new DB();
             $db->addConnection(['driver' => 'mysql', 'host' => 'localhost', 'database' => 'mywishlist',
                 'username' => 'wishmaster', 'password' => 'TropFort54', 'charset' => 'utf8', 'collation' => 'utf8_unicode_ci',
@@ -34,6 +33,7 @@ class VueListe{
                     $nm->psuedo=$_SESSION["user"];
                     $nm->no=$args["no"];
                     $nm->save();
+                    unset($_POST["commentaire"]);
                 }catch(Exception $e){
                     echo $e;
                 }
