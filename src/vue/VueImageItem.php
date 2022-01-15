@@ -140,7 +140,6 @@ class VueImageItem
         $db->bootEloquent();
 
         $id = $this->idItem($_SESSION["name"]);
-        echo "id : $id <br>";
         try {
             $res = Item::select("*")->where("id", "like", $id)->get();
         }catch(\Exception $e){
@@ -173,7 +172,6 @@ class VueImageItem
         $db->bootEloquent();
 
         $id = $this->idItem($_SESSION["name"]);
-        echo "id : $id <br>";
         try {
             $res = Item::select("*")->where("id", "like", $id)->get();
         }catch(\Exception $e){
