@@ -39,7 +39,7 @@ class VueListe{
         }
         $commentaires = Message::select('no', "user_id", "idmessage", "contenu")->where("no", "=", $args["no"])->get();
         foreach ($commentaires as $co) {
-            $rs->getBody()->write('<div class="message"><div class="psuedo">' . Utilisateur::select("user_id","psuedo")->where("user_id","=",$args["id"])->get()->first() . '</div><div class="contenu">' . $co->contenu . '</div></div><br>');
+            $rs->getBody()->write('<div class="message"><div class="psuedo">' . Utilisateur::select("user_id","psuedo")->where("user_id","=",$args["no"])->get()->first()->psuedo . '</div><div class="contenu">' . $co->contenu . '</div></div><br>');
         }
         return $rs;
     }

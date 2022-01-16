@@ -31,10 +31,13 @@ class ListeController
         $rs = VueHeader::afficherFormulaire($rq, $rs, $args);
         try{
             $elem = Liste::select("token","no","user_id")->where("no","=",$args["no"])->get()->first();
-            $bonToken = $elem->token;
-            $userID= $elem->user_id;
+            if($elem!=null) {
+                $bonToken = $elem->token;
+                $userID = $elem->user_id;
+            }else{
+                $bonToken=null;
+            }
         }catch(Exception $e){
-            $rs->getBody()->write($e);
             $bonToken=null;
         }
 
@@ -85,15 +88,21 @@ END
             try {
                 $nm = new Message();
                 $nm->contenu = filter_var($_POST["commentaire"], FILTER_SANITIZE_STRING);
-                $nm->psuedo = $_SESSION["user"];
+                $nm->user_id = $_SESSION["id"];
                 $nm->no = $args["no"];
                 $nm->save();
                 unset($_POST["commentaire"]);
+                $rs=ListeController::afficherTout($rq, $rs, $args);
             } catch (Exception $e) {
                 echo $e;
             }
+        }else if(isset($_POST["effacer"])){
+            $aEffacer = Liste::select("no")->where("no","=",$args["no"])->get()->first();
+            $aEffacer->delete();
+            $rs = VueHeader::afficherFormulaire($rq,$rs,$args);
+            $rs->getBody()->write("<h3>La liste a été supprimée!</h3>");
         }
-        return ListeController::afficherTout($rq, $rs, $args);
+        return $rs;
     }
 
     public static function afficherCreerListe(Request $rq, Response $rs, $args): Response

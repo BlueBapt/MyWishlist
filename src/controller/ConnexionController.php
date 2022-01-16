@@ -23,7 +23,7 @@ class ConnexionController
         $connecte=false;
         if (isset($_POST["mail"])) {
             try {
-                Authentification::creerUtilisateur($_POST["login"], $_POST["mdp"], $_POST["mail"], 1);
+                Authentification::creerUtilisateur($_POST["login"], $_POST["mdp"], $_POST["mail"], Authentification::$USER);
                 Authentification::authentification($_POST["login"], $_POST["mdp"]);
                 $connecte=true;
             } catch (Exception $e) {
