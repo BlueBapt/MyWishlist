@@ -31,8 +31,7 @@ class ConnexionController
             }
         } else if (isset($_POST["loginCO"])) {
             try {
-                Authentification::authentification($_POST["loginCO"], $_POST["mdpCO"]);
-                $connecte=true;
+                $connecte=Authentification::authentification($_POST["loginCO"], $_POST["mdpCO"]);
             } catch (Exception $e) {
                 $connecte=false;
             }
