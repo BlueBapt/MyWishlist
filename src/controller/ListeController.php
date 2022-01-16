@@ -42,7 +42,7 @@ class ListeController
         }
 
         if($bonToken===$args["token"]) {
-            if($userID===$_SESSION["id"] || $_SESSION["rights"]>Authentification::$USER) {
+            if(isset($_SESSION["id"]) && $userID===$_SESSION["id"] || isset($_SESSION["rights"]) && $_SESSION["rights"]>Authentification::$USER) {
                 $rs->getBody()->write(<<<END
             <form method="post">
                  <input type="submit" name="effacer" value="Effacer cette liste">

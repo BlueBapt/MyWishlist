@@ -46,7 +46,7 @@ class ItemController
             }
 
             if (isset($_SESSION["name"]) && $itemController->verifierExistanceItem($_SESSION["name"])) {
-                VueItemSup::verification();
+                VueItemSup::verification($rq, $rs, $args);
             }
             if (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "yes") {
                 //$itemController->sup($itemController->idItem($_SESSION["name"]));
