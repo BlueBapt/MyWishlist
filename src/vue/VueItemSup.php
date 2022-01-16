@@ -217,9 +217,7 @@ class VueItemSup
             $val = $_SESSION["name"];
         $acceuil = "";
         $notExist = "
-            <div id='error' style='background-color: red;width: 50%; height: 2em; margin-left: 25%;text-align: center; color: white'>
-                <p>L'item n'existe pas ou a été supprimé</p>
-            </div>
+            
         ";
         $existPlus = "
             <div id='error' style='background-color: green;width: 50%; height: 2em; margin-left: 25%;text-align: center; color: white'>

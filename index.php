@@ -113,12 +113,10 @@ $app->post('/liste/{no}/{token}',function(Request $rq, Response $rs, $args):Resp
     session_start();
     return ListeController::posterCommentaire($rq,  $rs, $args);
 });
-/**
 $app->get('/item/{id}',function(Request $rq, Response $rs, $args):Response{
     session_start();
     return VueAfficherItem::affichageItem($rq,$rs,$args);
 });
-*/
 $app->get('/reservation',function(Request $rq,Response $rs, $args):Response{
     session_start();
     try{

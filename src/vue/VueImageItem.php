@@ -13,7 +13,6 @@ class VueImageItem
     public string $name;
 
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
-        /**
         $vueImg = new VueImageItem();
         $nom = $vueImg->formulaireImage("nom");
 
@@ -74,11 +73,10 @@ class VueImageItem
             unset($_POST["act"]);
             unset($_POST["img"]);
             unset($_SESSION["name"]);
-        }*/
+        }
         return $rs;
     }
 
-    /**
     private function verifierExistanceItem(String $nom) : bool {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
@@ -157,7 +155,7 @@ class VueImageItem
             $nl->url = $r->url;
             $nl->tarif = $r->tarif;
         }
-        //$nl->img=$_POST["img"];
+        $nl->img=$_POST["img"];
 
 
         try {
@@ -199,7 +197,8 @@ class VueImageItem
         }
     }
 
-    private function formulaireImage(string $act):string{
+    private function formulaireImage(string $act):string
+    {
         $ajout = "
         <!DOCTYPE html>
             <html lang='fr'>
@@ -269,7 +268,7 @@ class VueImageItem
             </body>
             </html>
         ";
-        $modifie ="
+        $modifie = "
             <!DOCTYPE html>
             <html lang='fr'>
             <head>
@@ -338,7 +337,7 @@ class VueImageItem
             </body>
             </html>
         ";
-        $nom ="
+        $nom = "
             <!DOCTYPE html>
             <html lang='fr'>
             <head>
@@ -427,5 +426,4 @@ class VueImageItem
         else
             return "error";
     }
-    */
 }

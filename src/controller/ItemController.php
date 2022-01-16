@@ -22,8 +22,6 @@ class ItemController
         $db->setAsGlobal();
         $db->bootEloquent();
 
-        $itemController = new ItemController();
-
         $rs = VueHeader::afficherFormulaire($rq, $rs, $args);
 
         $ic = new ItemController();
@@ -37,6 +35,15 @@ class ItemController
 
         if (isset($_POST["name"]))
             $_SESSION["name"] = $_POST["name"];
+        if (isset($_SESSION["name"]) && !$ic->verifierExistanceItem($_SESSION["name"])) {
+            unset($_SESSION["name"]);
+            $rs->getBody()->write(<<<END
+                <div id='error' style='background-color: red;width: 50%; height: 2em; margin-left: 25%;text-align: center; color: white'>
+                    <p>L'item n'existe pas ou a été supprimé</p>
+                </div>
+            END
+            );
+        }
 
         if (isset($_POST["actionAcc"]) && $_POST["actionAcc"] == "ajout") {
             //$rs = VueAjoutItem::afficherFormulaire($rq, $rs, $args);
@@ -45,11 +52,12 @@ class ItemController
                 VueItemSup::acceuil($rq, $rs, $args);
             }
 
-            if (isset($_SESSION["name"]) && $itemController->verifierExistanceItem($_SESSION["name"])) {
+            if (isset($_SESSION["name"]) && $ic->verifierExistanceItem($_SESSION["name"])) {
                 VueItemSup::verification($rq, $rs, $args);
             }
             if (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "yes") {
-                //$itemController->sup($itemController->idItem($_SESSION["name"]));
+                $ic->sup($ic->idItem($_SESSION["name"]));
+                echo 'yes';
                 header(1);
             } elseif (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "no"){
                 unset($_SESSION["name"]);
