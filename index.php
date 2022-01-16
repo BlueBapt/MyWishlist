@@ -29,19 +29,14 @@ $app->post('/creer/liste',function (Request $rq, Response $rs, $args):Response {
     return ListeController::envoyerListe($rq,$rs,$args);
 });
 
-$app->get('/item/test',function(Request $rq, Response $rs, $args):Response{
+$app->get('/item/action',function(Request $rq, Response $rs, $args):Response{
     session_start();
     return ItemController::itemAction($rq, $rs, $args);
 });
 
-$app->post('/item/test',function(Request $rq, Response $rs, $args):Response{
+$app->post('/item/action',function(Request $rq, Response $rs, $args):Response{
     session_start();
     return ItemController::itemAction($rq, $rs, $args);
-});
-
-$app->get('/ajout/item',function (Request $rq, Response $rs, $args):Response {
-    session_start();
-    return VueAjoutItem::afficherFormulaire($rq, $rs, $args);
 });
 
 $app->get('/modifie/item',function (Request $rq, Response $rs, $args):Response {

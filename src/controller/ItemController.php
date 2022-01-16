@@ -49,7 +49,7 @@ class ItemController
         }
 
         if (isset($_POST["actionAcc"]) && $_POST["actionAcc"] == "ajout") {
-            //$rs = VueAjoutItem::afficherFormulaire($rq, $rs, $args);
+            $rs = VueAjoutItem::formulaire($rq, $rs, $args);
         } elseif (isset($_POST["actionAcc"]) && $_POST["actionAcc"] == "sup") {
             if (!isset($_SESSION["name"])){
                 VueItemSup::acceuil($rq, $rs, $args);
@@ -71,6 +71,70 @@ class ItemController
         if (isset($_POST["verif"]) && $_POST["verif"] == "no" || isset($_POST["verif"]) && $_POST["verif"] == "yes") {
             header(1);
         }
+
+
+        if(isset($_POST["description"]) && isset($_POST["nomItem"]) && isset($_POST["tarif"]) && isset($_POST["token"])){
+            if ($ic->verifierExistanceListe($_POST["token"]) && !$ic->verifierExistanceItem($_POST["nomItem"])){
+                $ic->ajouterItem($ic->idListe($_POST["token"]));
+                $rs->getBody()->write(<<<END
+                    <div class="reussite" >L'opération est une réussite!</div>
+                    <style>
+                        .reussite{
+                            background-color: green;
+                            width: 50%;
+                            margin-left: 25%;
+                            color: white;
+                            text-align: center;
+                            height: 2em;
+                        }
+                    </style>
+                END);
+            } else if(!$ic->verifierExistanceListe($_POST["token"])){
+                $rs->getBody()->write(<<<END
+                    <div class="reussite">La liste n'existe pas !!!</div>
+                    <style>
+                        .reussite{
+                            background-color: red;
+                            width: 50%;
+                            margin-left: 25%;
+                            color: white;
+                            text-align: center;
+                            height: 2em;
+                        }
+                    </style>
+                END);
+            }else if($ic->verifierExistanceItem($_POST["nomItem"])){
+                $rs->getBody()->write(<<<END
+                    <div class="reussite">L'item existe déjà !</div>
+                    <style>
+                        .reussite{
+                            background-color: red;
+                            width: 50%;
+                            margin-left: 25%;
+                            color: white;
+                            text-align: center;
+                            height: 2em;
+                        }
+                    </style>
+                END);
+            }else if(!$ic->verifierExistanceListe($_POST["token"])){
+                $rs->getBody()->write(<<<END
+                    <div class="reussite">La liste n'existe pas !!!</div>
+                    <style>
+                        .reussite{
+                            background-color: red;
+                            width: 50%;
+                            margin-left: 25%;
+                            color: white;
+                            text-align: center;
+                            height: 2em;
+                        }
+                    </style>
+                END);
+            }
+        }
+
+
         return $rs;
     }
 
@@ -247,6 +311,39 @@ class ItemController
             echo $t;
         }
         unset($_SESSION["name"]);
+    }
+
+    private function ajouterItem(int $idListe) {
+        $db = new DB();
+        $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
+            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'prefix'=>''] );
+        $db->setAsGlobal();
+        $db->bootEloquent();
+
+        try {
+            $res = Item::select("*")->get();
+        }catch(\Exception $e){
+            echo $e;
+        }
+        $i =1;
+        foreach ($res as $r)
+            $i++;
+
+        $nl = new Item();
+        $nl->id=$i;
+        $nl->liste_id=$idListe;
+        $nl->nom=$_POST["nomItem"];
+        $nl->descr=$_POST["description"];
+        if (isset($_POST["img"]))
+            $nl->img=$_POST["img"];
+        $nl->tarif=$_POST["tarif"];
+
+        try {
+            $nl->save();
+        }catch(\Exception $e){
+            echo $e;
+        }
     }
 
     private function form() : string{
