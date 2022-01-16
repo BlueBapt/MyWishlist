@@ -14,15 +14,14 @@ use Slim\Http\Response;
 
 class ItemController
 {
-    public static function itemAction(Request $rq, Response $rs, $args) {
+    public static function itemAction(Request $rq, Response $rs, $args): Response
+    {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
             'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
-
-        $itemController = new ItemController();
 
         $rs = VueHeader::afficherFormulaire($rq, $rs, $args);
 
@@ -37,6 +36,15 @@ class ItemController
 
         if (isset($_POST["name"]))
             $_SESSION["name"] = $_POST["name"];
+        if (isset($_SESSION["name"]) && !$ic->verifierExistanceItem($_SESSION["name"])) {
+            unset($_SESSION["name"]);
+            $rs->getBody()->write(<<<END
+                <div id='error' style='background-color: red;width: 50%; height: 2em; margin-left: 25%;text-align: center; color: white'>
+                    <p>L'item n'existe pas ou a été supprimé</p>
+                </div>
+            END
+            );
+        }
 
         if (isset($_POST["actionAcc"]) && $_POST["actionAcc"] == "ajout") {
             //$rs = VueAjoutItem::afficherFormulaire($rq, $rs, $args);
@@ -45,18 +53,23 @@ class ItemController
                 VueItemSup::acceuil($rq, $rs, $args);
             }
 
-            if (isset($_SESSION["name"]) && $itemController->verifierExistanceItem($_SESSION["name"])) {
+            if (isset($_SESSION["name"]) && $ic->verifierExistanceItem($_SESSION["name"])) {
                 VueItemSup::verification($rq, $rs, $args);
+                echo 'yes1';
             }
-            if (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "yes") {
-                //$itemController->sup($itemController->idItem($_SESSION["name"]));
-                header(1);
-            } elseif (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "no"){
-                unset($_SESSION["name"]);
-                header(1);
-            }
-            if (isset($_POST["verif"]) && $_POST["verif"] == "no" || isset($_POST["verif"]) && $_POST["verif"] == "yes")
-                header(1);
+        }
+
+        if (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "yes") {
+            $ic->sup($ic->idItem($_SESSION["name"]));
+            echo 'yes2';
+            header(1);
+        } elseif (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "no"){
+            unset($_SESSION["name"]);
+        }
+
+        if (isset($_POST["verif"]) && $_POST["verif"] == "no" || isset($_POST["verif"]) && $_POST["verif"] == "yes") {
+            header(1);
+            echo 'yes4';
         }
         return $rs;
     }
@@ -229,6 +242,7 @@ class ItemController
         $nl = Item::where("id", "=", $idItem)->first();
 
         try {
+            echo "<br>ah";
             $nl->delete();
         } catch (\Throwable $t) {
             echo $t;
