@@ -14,7 +14,8 @@ use Slim\Http\Response;
 
 class ItemController
 {
-    public static function itemAction(Request $rq, Response $rs, $args) {
+    public static function itemAction(Request $rq, Response $rs, $args): Response
+    {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
             'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
@@ -54,17 +55,21 @@ class ItemController
 
             if (isset($_SESSION["name"]) && $ic->verifierExistanceItem($_SESSION["name"])) {
                 VueItemSup::verification($rq, $rs, $args);
+                echo 'yes1';
             }
-            if (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "yes") {
-                $ic->sup($ic->idItem($_SESSION["name"]));
-                echo 'yes';
-                header(1);
-            } elseif (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "no"){
-                unset($_SESSION["name"]);
-                header(1);
-            }
-            if (isset($_POST["verif"]) && $_POST["verif"] == "no" || isset($_POST["verif"]) && $_POST["verif"] == "yes")
-                header(1);
+        }
+
+        if (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "yes") {
+            $ic->sup($ic->idItem($_SESSION["name"]));
+            echo 'yes2';
+            header(1);
+        } elseif (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "no"){
+            unset($_SESSION["name"]);
+        }
+
+        if (isset($_POST["verif"]) && $_POST["verif"] == "no" || isset($_POST["verif"]) && $_POST["verif"] == "yes") {
+            header(1);
+            echo 'yes4';
         }
         return $rs;
     }
@@ -237,6 +242,7 @@ class ItemController
         $nl = Item::where("id", "=", $idItem)->first();
 
         try {
+            echo "<br>ah";
             $nl->delete();
         } catch (\Throwable $t) {
             echo $t;
