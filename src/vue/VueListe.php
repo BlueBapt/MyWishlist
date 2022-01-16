@@ -3,6 +3,7 @@ namespace mywishlist\vue;
 require_once 'vendor/autoload.php';
 
 use Exception;
+use mywishlist\model\Utilisateur;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \mywishlist\model\Liste as Liste;
@@ -22,8 +23,8 @@ class VueListe{
         $db->bootEloquent();
 
 
-        $listes = Liste::select('no', 'user_id', 'titre', 'description', 'expiration', 'token')->where('no', '=', $args)->get();
-        $item = Item::select('id', 'img')->where('liste_id', '=', $args)->get();
+        $listes = Liste::select('no', 'user_id', 'titre', 'description', 'expiration', 'token')->where('no', '=', $args["no"])->get();
+        $item = Item::select('id', 'img')->where('liste_id', '=', $args["no"])->get();
         foreach ($listes as $l) {
             if ($l->first() != null) {
                 $rs->getBody()->write($l->no . "<br>" . $l->user_id . "<br>" . $l->titre . "<br>" . $l->description . "<br>" . $l->expiration . "<br>" . $l->token . "<br>");
@@ -32,13 +33,13 @@ class VueListe{
                     if (str_starts_with($i->img, "http"))
                         $image = $i->img;
                     $rs->getBody()->write("<a href='http://localhost/mywishlist/item/$i->id'>");
-                    $rs->getBody()->write("<img src='$image' width='300em'>" . "</a><br>");
+                    $rs->getBody()->write("<img src='../$image' width='300em'>" . "</a><br>");
                 }
             }
         }
-        $commentaires = Message::select('no', "psuedo", "idmessage", "contenu")->where("no", "=", $args)->get();
+        $commentaires = Message::select('no', "user_id", "idmessage", "contenu")->where("no", "=", $args["no"])->get();
         foreach ($commentaires as $co) {
-            $rs->getBody()->write('<div class="message"><div class="psuedo">' . $co->psuedo . '</div><div class="contenu">' . $co->contenu . '</div></div><br>');
+            $rs->getBody()->write('<div class="message"><div class="psuedo">' . Utilisateur::select("user_id","psuedo")->where("user_id","=",$args["id"])->get()->first() . '</div><div class="contenu">' . $co->contenu . '</div></div><br>');
         }
         return $rs;
     }

@@ -19,21 +19,21 @@ class Authentification
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
-        $reserv = Utilisateur::select("psuedo", "mdp")->where("psuedo", "=", $login)->get();
+        $reserv = Utilisateur::select("user_id","psuedo", "mdp")->where("psuedo", "=", $login)->get();
         $trouve = false;
         $mdp = hash("md5", $mdp . "énormetonmdpMeccéFOUUUUUUuIncroy4bl3");
         foreach ($reserv as $r) {
             if (!$trouve) {
                 if ($r->mdp === $mdp) {
                     $trouve = true;
-                    self::chargerProfil($login);
+                    self::chargerProfil($login,$r->user_id);
                 }
             }
         }
         return $trouve;
     }
 
-    private static function chargerProfil($login){
+    private static function chargerProfil($login,$user_id){
         if (isset($_SESSION["user"])) {
             unset($_SESSION["user"]);
         }
@@ -46,6 +46,7 @@ class Authentification
         $db->bootEloquent();
         $droits = Utilisateur::select("psuedo", "droits")->where("psuedo", "=", $login)->get()->first();
         $_SESSION["rights"] = $droits;
+        $_SESSION["id"] = $user_id;
     }
 
     public static function checkDroits($droitsRequis):bool{

@@ -2,6 +2,7 @@
 
 namespace mywishlist\vue;
 
+use Illuminate\Database\Capsule\Manager as DB;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -9,6 +10,7 @@ class VueHeader
 {
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response
     {
+
         $user = "inscription/connexion";
         $co = "https://127.0.0.1/mywishlist/inscription";
         if (isset($_SESSION["user"])) {

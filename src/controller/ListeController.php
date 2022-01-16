@@ -4,10 +4,12 @@ namespace mywishlist\controller;
 require_once 'vendor/autoload.php';
 
 use Exception;
+use Illuminate\Container\Util;
 use Illuminate\Database\Capsule\Manager as DB;
 use mywishlist\model\Authentification;
 use mywishlist\model\Liste as Liste;
 use mywishlist\model\Message as Message;
+use mywishlist\model\Utilisateur;
 use mywishlist\vue\VueCreateurListe;
 use mywishlist\vue\VueInscription;
 use mywishlist\vue\VueHeader;
@@ -19,23 +21,46 @@ class ListeController
 {
     public static function afficherTout(Request $rq, Response $rs, $args)
     {
-        $rs = VueHeader::afficherFormulaire($rq,$rs,$args);
-        $rs = VueListe::vueAfficherTout($rq, $rs, $args);
-        if (isset($_SESSION["user"])) {
-            $rs->getBody()->write(<<<END
-                <hr> <br>
-                <form method="post">
-                    <textarea name="commentaire" id="titre" placeholder="Entrez un commentaire... (140 caracteres max)" required></textarea>
-                    <input type="submit" value="Valider">
-                </form>
-                
-                END);
-        } else {
-            $rs->getBody()->write(<<<END
-                <hr> <br>
-                    Connectez vous pour ajouter un commentaire!<br>
-                
-                END);
+        $db = new DB();
+        $db->addConnection(['driver' => 'mysql', 'host' => 'localhost', 'database' => 'mywishlist',
+            'username' => 'wishmaster', 'password' => 'TropFort54', 'charset' => 'utf8', 'collation' => 'utf8_unicode_ci',
+            'prefix' => '']);
+        $db->setAsGlobal();
+        $db->bootEloquent();
+
+        $rs = VueHeader::afficherFormulaire($rq, $rs, $args);
+
+        try{
+            $bonToken = Liste::select("token","no")->where("no","=",$args["no"])->get()->first();
+            $bonToken = $bonToken->token;
+        }catch(Exception $e){
+            $rs->getBody()->write($e);
+            $bonToken=null;
+        }
+
+        if($bonToken===$args["token"]) {
+
+            $rs = VueListe::vueAfficherTout($rq, $rs, $args);
+            if (isset($_SESSION["user"])) {
+                $rs->getBody()->write(<<<END
+                    <hr> <br>
+                    <form method="post">
+                        <textarea name="commentaire" id="titre" placeholder="Entrez un commentaire... (140 caracteres max)" required></textarea>
+                        <input type="submit" value="Valider">
+                    </form>
+                    
+                    END
+                );
+            } else {
+                $rs->getBody()->write(<<<END
+                    <hr> <br>
+                        Connectez vous pour ajouter un commentaire!<br>
+                    
+                    END
+                );
+            }
+        }else{
+            $rs->getBody()->write("<h1> Erreur : la liste n'existe pas ou le token n'est pas bon </h1>");
         }
         return $rs;
     }
@@ -88,6 +113,8 @@ class ListeController
             $db->setAsGlobal();
             $db->bootEloquent();
 
+            $id_user = Utilisateur::select("id_user, psuedo");
+
             $res = Liste::select("titre")->get();
             $i =1;
             foreach ($res as $r) {
@@ -95,12 +122,12 @@ class ListeController
             }
             $nl = new Liste();
             $nl->no=$i;
-            $nl->user_id=$i;
+            $nl->user_id=$_SESSION["id"];
 
             $nl->titre=filter_var($_POST["titre"] ,FILTER_SANITIZE_STRING);
             $nl->description=filter_var($_POST["description"] ,FILTER_SANITIZE_STRING);
             $nl->expiration=filter_var($_POST["exp"] ,FILTER_SANITIZE_STRING);
-            $nl->token="nosecure".$i;
+            $nl->token="nosecure".$_SESSION["id"];
 
             try {
                 $nl->save();

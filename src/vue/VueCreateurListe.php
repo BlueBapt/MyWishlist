@@ -19,7 +19,7 @@ class VueCreateurListe
         </p>
         <p class="description">
             <label for="description">Entrer la description : </label>
-            <input type="text" name="description" id="descr" placeholder="Description" required>
+            <textarea name="description" id="descr" placeholder="Description" required></textarea>
         </p>
         <p class="exp">
             <label for="exp">Entrer la date d'expiration : </label>

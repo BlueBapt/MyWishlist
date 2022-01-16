@@ -91,12 +91,12 @@ $app->post('/inscription',function (Request $rq, Response $rs, $args):Response {
 });
 
 
-$app->get('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
+$app->get('/liste/{no}/{token}',function(Request $rq, Response $rs, $args):Response{
     session_start();
     return ListeController::afficherTout($rq,  $rs, $args);
 });
 
-$app->post('/liste/{no}',function(Request $rq, Response $rs, $args):Response{
+$app->post('/liste/{no}/{token}',function(Request $rq, Response $rs, $args):Response{
     session_start();
     return ListeController::posterCommentaire($rq,  $rs, $args);
 });
