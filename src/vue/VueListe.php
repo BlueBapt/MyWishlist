@@ -13,8 +13,7 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 class VueListe{
     
-    public static function vueAfficherTout(Request $rq, Response $rs, $args)
-    {
+    public static function vueAfficherTout(Request $rq, Response $rs, $args){
         $db = new DB();
         $db->addConnection(['driver' => 'mysql', 'host' => 'localhost', 'database' => 'mywishlist',
             'username' => 'wishmaster', 'password' => 'TropFort54', 'charset' => 'utf8', 'collation' => 'utf8_unicode_ci',

@@ -21,7 +21,11 @@ use \mywishlist\vue\VueAfficherItem as VueAfficherItem;
 $app = new \Slim\App;
 $app->get('/creer/liste',function (Request $rq, Response $rs, $args):Response {
     session_start();
-    return VueCreateurListe::afficherFormulaire($rq,$rs,$args);
+    return ListeController::afficherCreerListe($rq,$rs,$args);
+});
+$app->post('/creer/liste',function (Request $rq, Response $rs, $args):Response {
+    session_start();
+    return ListeController::envoyerListe($rq,$rs,$args);
 });
 $app->get('/ajout/item',function (Request $rq, Response $rs, $args):Response {
     session_start();
