@@ -66,7 +66,12 @@ class ListeController
     public static function afficherCreerListe(Request $rq, Response $rs, $args): Response
     {
         $rs = VueHeader::afficherFormulaire($rq,$rs,$args);
-        $rs = VueCreateurListe::afficherFormulaire($rq,$rs,$args);
+        if(isset($_SESSION["user"])){
+            $rs = VueCreateurListe::afficherFormulaire($rq,$rs,$args);
+        }else{
+            $rs = VueCreateurListe::afficherPasCo($rq,$rs,$args);
+        }
+
         return $rs;
     }
 

@@ -36,7 +36,7 @@ class VueHeader
                                     <a href="" id="headerA">Supprimer une image</a>
                                 </div>
                             </div>
-                            <h1 class="mwl">My Wish List</h1>
+                            <h1 class="mwl"><a href="/mywishlist">My Wish List</a></h1>
                             <a id="insa" href="$co"><button id="insc">$user</button></a>
                         </div>
                         <script>

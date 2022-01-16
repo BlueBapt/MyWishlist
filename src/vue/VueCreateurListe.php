@@ -69,4 +69,49 @@ END);
 
         return $rs;
     }
+
+    public static function afficherPasCo(Request $rq, Response $rs, $args):Response{
+        $rs->getBody()->write(<<<END
+    <h3>Connectez vous pour créer une liste!</h3>
+
+    <style>
+        body{
+        background-color: lightgray;
+        background-size: cover;
+    }
+    
+    .reussite{
+        color:white;
+        width: 50%;
+        background-color: green;
+        border: 5px ridge white;
+        margin-left: 25%;
+        height: 2em;
+    }
+
+    form{
+        width: 50%;
+        grid-column: 2;
+        background-color: rgb(22, 31, 41);
+        border: 5px ridge white;
+        margin-left: 25%;
+        height: 205px;
+    }
+
+    form > fieldset > p{
+        color: white;
+        margin-bottom: 20px;
+    }
+
+    legend{
+        color: white;
+    }
+    </style>
+</body>
+</html>
+
+END);
+
+        return $rs;
+    }
 }
