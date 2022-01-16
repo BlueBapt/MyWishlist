@@ -188,27 +188,4 @@ class VueItemSup
         );
         return $rs;
     }
-
-    private function form(string $name) : string{
-        $val = null;
-        if (isset($_SESSION["name"]))
-            $val = $_SESSION["name"];
-        $acceuil = "";
-        $notExist = "
-            
-        ";
-        $existPlus = "
-            <div id='error' style='background-color: green;width: 50%; height: 2em; margin-left: 25%;text-align: center; color: white'>
-                <p>L'item a été suprimé</p>
-            </div>
-        ";
-
-        if ($name == "inexist")
-            return $notExist;
-        elseif ($name == "ep")
-            return $existPlus;
-        else {
-            return "error";
-        }
-    }
 }

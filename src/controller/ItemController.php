@@ -36,6 +36,8 @@ class ItemController
 
         if (isset($_POST["name"]))
             $_SESSION["name"] = $_POST["name"];
+
+        //oscar de la meilleur fonctionnalite
         if (isset($_SESSION["name"]) && !$ic->verifierExistanceItem($_SESSION["name"])) {
             unset($_SESSION["name"]);
             $rs->getBody()->write(<<<END
@@ -51,17 +53,16 @@ class ItemController
         } elseif (isset($_POST["actionAcc"]) && $_POST["actionAcc"] == "sup") {
             if (!isset($_SESSION["name"])){
                 VueItemSup::acceuil($rq, $rs, $args);
+                header(1);
             }
 
             if (isset($_SESSION["name"]) && $ic->verifierExistanceItem($_SESSION["name"])) {
                 VueItemSup::verification($rq, $rs, $args);
-                echo 'yes1';
             }
         }
 
         if (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "yes") {
             $ic->sup($ic->idItem($_SESSION["name"]));
-            echo 'yes2';
             header(1);
         } elseif (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "no"){
             unset($_SESSION["name"]);
@@ -69,7 +70,6 @@ class ItemController
 
         if (isset($_POST["verif"]) && $_POST["verif"] == "no" || isset($_POST["verif"]) && $_POST["verif"] == "yes") {
             header(1);
-            echo 'yes4';
         }
         return $rs;
     }
@@ -242,7 +242,6 @@ class ItemController
         $nl = Item::where("id", "=", $idItem)->first();
 
         try {
-            echo "<br>ah";
             $nl->delete();
         } catch (\Throwable $t) {
             echo $t;
