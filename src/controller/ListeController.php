@@ -29,17 +29,25 @@ class ListeController
         $db->bootEloquent();
 
         $rs = VueHeader::afficherFormulaire($rq, $rs, $args);
-
         try{
-            $bonToken = Liste::select("token","no")->where("no","=",$args["no"])->get()->first();
-            $bonToken = $bonToken->token;
+            $elem = Liste::select("token","no","user_id")->where("no","=",$args["no"])->get()->first();
+            $bonToken = $elem->token;
+            $userID= $elem->user_id;
         }catch(Exception $e){
             $rs->getBody()->write($e);
             $bonToken=null;
         }
 
         if($bonToken===$args["token"]) {
-
+            if($userID===$_SESSION["id"] || $_SESSION["rights"]>Authentification::$USER) {
+                $rs->getBody()->write(<<<END
+            <form method="post">
+                 <input type="submit" name="effacer" value="Effacer cette liste">
+            </form>
+            
+END
+                );
+            }
             $rs = VueListe::vueAfficherTout($rq, $rs, $args);
             if (isset($_SESSION["user"])) {
                 $rs->getBody()->write(<<<END
