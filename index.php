@@ -2,6 +2,7 @@
 require 'vendor/autoload.php';
 
 use mywishlist\controller\ConnexionController;
+use mywishlist\controller\ItemController;
 use mywishlist\controller\ListeController;
 use mywishlist\model\Authentification as Authentification;
 use mywishlist\vue\VueAcceuil;
@@ -27,10 +28,22 @@ $app->post('/creer/liste',function (Request $rq, Response $rs, $args):Response {
     session_start();
     return ListeController::envoyerListe($rq,$rs,$args);
 });
+
+$app->get('/item/test',function(Request $rq, Response $rs, $args):Response{
+    session_start();
+    return ItemController::itemAction($rq, $rs, $args);
+});
+
+$app->post('/item/test',function(Request $rq, Response $rs, $args):Response{
+    session_start();
+    return ItemController::itemAction($rq, $rs, $args);
+});
+
 $app->get('/ajout/item',function (Request $rq, Response $rs, $args):Response {
     session_start();
     return VueAjoutItem::afficherFormulaire($rq, $rs, $args);
 });
+
 $app->get('/modifie/item',function (Request $rq, Response $rs, $args):Response {
     session_start();
     try {

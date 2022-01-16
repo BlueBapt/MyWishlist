@@ -14,7 +14,6 @@ use Illuminate\Database\Capsule\Manager as DB;
 class VueAjoutItem
 {
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
-        session_start();
         $user = "inscription/connexion";
         $co = "https://127.0.0.1/mywishlist/inscription";
         if (isset($_SESSION["user"])) {
@@ -23,59 +22,6 @@ class VueAjoutItem
         }
 
         $margin = "9%";
-        $rs->getBody()->write(<<<END
-                        <header>
-                        <div class="title">
-                            <div class="menu" id="menu">
-                                <div class="liste" id="liste">
-                                    <button id="listeB"><h2>Liste</h2></button>
-                                    <a href="http://127.0.0.1/mywishlist/creer/liste" id="headerA">Ajouter une liste</a>
-                                    <a href="" id="headerA">Afficher une liste</a>
-                                    <a href="" id="headerA">Modifier une liste</a>
-                                    <a href="" id="headerA">Partager une liste</a>
-                                </div>
-                                <div class="item" id="item">
-                                    <button id="itemB"><h2>Item</h2></button>
-                                    <a href="http://127.0.0.1/mywishlist/ajout/item" id="headerA">Ajouter un item</a>
-                                    <a href="" id="headerA">Supprimer un item</a>
-                                    <a href="" id="headerA">Modifier un item</a>
-                                    <a href="" id="headerA">Ajouter une image</a>
-                                    <a href="" id="headerA">Modifier une image</a>
-                                    <a href="" id="headerA">Supprimer une image</a>
-                                </div>
-                            </div>
-                            <h1 class="mwl">My Wish List</h1>
-                            <a id="insa" href="$co"><button id="insc">$user</button></a>
-                        </div>
-                        <script>
-                            const item = document.getElementById("item")
-                            const liste = document.getElementById("liste")
-                            const itemB = document.getElementById("itemB")
-                            const listeB = document.getElementById("listeB")
-                    
-                            let desL = true, desI = true
-                            listeB.addEventListener("click", () => {
-                                if (desL) {
-                                    liste.style.height = 12 +'em'
-                                    desL = false
-                                }else {
-                                    liste.style.height = 2 +'em'
-                                    desL = true
-                                }
-                            })
-                            itemB.addEventListener("click", () => {
-                                if (desI) {
-                                    item.style.height = 16 +'em'
-                                    desI = false
-                                }else {
-                                    item.style.height = 2 +'em'
-                                    desI = true
-                                }
-                            })
-                        </script>
-                    </header>
-                    END
-                    );
         if(isset($_GET["description"]) && isset($_GET["nom"]) && isset($_GET["tarif"]) && isset($_GET["token"])){
             $vai = new VueAjoutItem();
             $margin = "0%";

@@ -14,6 +14,7 @@ class VueItemSup
         $vue = new VueItemSup();
         $sup = $vue->form("acceuil");
 
+        /**
         if (isset($_POST["name"]))
             $_SESSION["name"] = $_POST["name"];
         if (isset($_SESSION["name"]) && !$vue->verifierExistanceItem($_SESSION["name"])) {
@@ -24,116 +25,14 @@ class VueItemSup
             END
             );
         }
-
-        if (!isset($_SESSION["name"])){
-            $rs->getBody()->write(<<<END
-                $sup
-            END
-            );
-        }
-        if (isset($_SESSION["name"]) && $vue->verifierExistanceItem($_SESSION["name"])) {
-            $res = $vue->form("verif");
-            $rs->getBody()->write(<<<END
-                $res
-            END
-            );
-        }
-        if (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "yes") {
-            $vue->sup($vue->idItem($_SESSION["name"]));
-            header(1);
-        } elseif (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "no"){
-            unset($_SESSION["name"]);
-            header(1);
-        }
-        if (isset($_POST["verif"]) && $_POST["verif"] == "no" || isset($_POST["verif"]) && $_POST["verif"] == "yes")
-            header(1);
+        */
 
         return $rs;
     }
 
-    private function sup(int $idItem){
-        $db = new DB();
-        $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
-            'prefix'=>''] );
-        $db->setAsGlobal();
-        $db->bootEloquent();
-
-        try {
-            $res = Item::select("*")->where("id", "like", $idItem)->get();
-        }catch(\Exception $e){
-            echo $e;
-        }
-
-        $nl = Item::where("id", "=", $idItem)->first();
-
-        try {
-            $nl->delete();
-        } catch (\Throwable $t) {
-            echo $t;
-        }
-        unset($_SESSION["name"]);
-    }
-
-    private function verifierExistanceItem(String $nom) : bool {
-        $db = new DB();
-        $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
-            'prefix'=>''] );
-        $db->setAsGlobal();
-        $db->bootEloquent();
-
-        try {
-            $res = Item::select("nom")->get();
-        }catch(\Exception $e){
-            echo $e;
-        }
-        $i = false;
-        foreach ($res as $r => $s){
-            $t = explode(":", $s);
-            $tn = $t[1];
-            $t = explode("}", $tn);
-            $tn = $t[0];
-            $t = explode("\"", implode($t));
-            if (isset($t[1]))
-                $tn = $t[1];
-            if ($tn === $nom) {
-                $i = true;
-                break;
-            }
-        }
-        return $i;
-    }
-
-    private function idItem(String $nom) : int {
-        $db = new DB();
-        $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
-            'prefix'=>''] );
-        $db->setAsGlobal();
-        $db->bootEloquent();
-
-        try {
-            $res = Item::where("nom", "=", "$nom")->get();
-        }catch(\Exception $e){
-            echo $e;
-        }
-        $i = 0;
-        foreach ($res as $r => $s){
-            $t = explode(",", $s);
-            $tn = $t[0];
-            $t = explode(":", $tn);
-            $tn = $t[1];
-            $i = $tn;
-        }
-        return $i;
-    }
-
-    private function form(string $name) : string{
-        $val = null;
-        if (isset($_SESSION["name"]))
-            $val = $_SESSION["name"];
-        $acceuil = "<!DOCTYPE html>
+    public static function acceuil(Request $rq, Response $rs, $args) : Response{
+        $rs->getBody()->write(<<<END
+            <!DOCTYPE html>
             <html lang='fr'>
             <head>
                 <meta charset='UTF-8'>
@@ -203,19 +102,18 @@ class VueItemSup
             </style>
              
             </body>
-            </html>";
-        $notExist = "
-            <div id='error' style='background-color: red;width: 50%; height: 2em; margin-left: 25%;text-align: center; color: white'>
-                <p>L'item n'existe pas ou a été supprimé</p>
-            </div>
-        ";
-        $existPlus = "
-            <div id='error' style='background-color: green;width: 50%; height: 2em; margin-left: 25%;text-align: center; color: white'>
-                <p>L'item a été suprimé</p>
-            </div>
-        ";
-        $v = "
-        <!DOCTYPE html>
+            </html>
+        END
+        );
+        return $rs;
+    }
+
+    public static function verification(Request $rq, Response $rs, $args) : Response {
+        $val = null;
+        if (isset($_SESSION["name"]))
+            $val = $_SESSION["name"];
+        $rs->getBody()->write(<<<END
+            <!DOCTYPE html>
             <html lang='fr'>
             <head>
                 <meta charset='UTF-8'>
@@ -307,15 +205,30 @@ class VueItemSup
                 </style>
              
             </body>
-            </html>";
+            </html>
+        END
+        );
+        return $rs;
+    }
 
-        if ($name == "acceuil")
-            return $acceuil;
-        elseif ($name == "inexist")
+    private function form(string $name) : string{
+        $val = null;
+        if (isset($_SESSION["name"]))
+            $val = $_SESSION["name"];
+        $acceuil = "";
+        $notExist = "
+            <div id='error' style='background-color: red;width: 50%; height: 2em; margin-left: 25%;text-align: center; color: white'>
+                <p>L'item n'existe pas ou a été supprimé</p>
+            </div>
+        ";
+        $existPlus = "
+            <div id='error' style='background-color: green;width: 50%; height: 2em; margin-left: 25%;text-align: center; color: white'>
+                <p>L'item a été suprimé</p>
+            </div>
+        ";
+
+        if ($name == "inexist")
             return $notExist;
-        elseif ($name == "verif") {
-            return $v;
-        }
         elseif ($name == "ep")
             return $existPlus;
         else {

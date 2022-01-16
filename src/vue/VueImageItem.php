@@ -13,6 +13,7 @@ class VueImageItem
     public string $name;
 
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
+        /**
         $vueImg = new VueImageItem();
         $nom = $vueImg->formulaireImage("nom");
 
@@ -25,7 +26,7 @@ class VueImageItem
             $nom
             END
             );
-        } elseif ($_POST["act"] === "ajout" && $vueImg->verifierExistanceItem($_SESSION["name"]) && !isset($_POST["img"])) {
+        } elseif ($_POST["act"] === "ajout" && isset($_SESSION["name"]) && $vueImg->verifierExistanceItem($_SESSION["name"]) && !isset($_POST["img"])) {
             $ajout = $vueImg->formulaireImage("ajout");
             $rs->getBody()->write(<<<END
                 $ajout
@@ -73,10 +74,11 @@ class VueImageItem
             unset($_POST["act"]);
             unset($_POST["img"]);
             unset($_SESSION["name"]);
-        }
+        }*/
         return $rs;
     }
 
+    /**
     private function verifierExistanceItem(String $nom) : bool {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
@@ -139,7 +141,9 @@ class VueImageItem
         $db->setAsGlobal();
         $db->bootEloquent();
 
-        $id = $this->idItem($_SESSION["name"]);
+        $id = 0;
+        if (isset($_SESSION["name"]))
+            $id = $this->idItem($_SESSION["name"]);
         try {
             $res = Item::select("*")->where("id", "like", $id)->get();
         }catch(\Exception $e){
@@ -153,7 +157,7 @@ class VueImageItem
             $nl->url = $r->url;
             $nl->tarif = $r->tarif;
         }
-        $nl->img=$_POST["img"];
+        //$nl->img=$_POST["img"];
 
 
         try {
@@ -423,5 +427,5 @@ class VueImageItem
         else
             return "error";
     }
-
+    */
 }

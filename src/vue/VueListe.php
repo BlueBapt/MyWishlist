@@ -29,11 +29,11 @@ class VueListe{
             if ($l->first() != null) {
                 $rs->getBody()->write($l->no . "<br>" . $l->user_id . "<br>" . $l->titre . "<br>" . $l->description . "<br>" . $l->expiration . "<br>" . $l->token . "<br>");
                 foreach ($item as $i) {
-                    $image = '../img/' . $i->img;
+                    $image = '../../img/' . $i->img;
                     if (str_starts_with($i->img, "http"))
                         $image = $i->img;
                     $rs->getBody()->write("<a href='http://localhost/mywishlist/item/$i->id'>");
-                    $rs->getBody()->write("<img src='../$image' width='300em'>" . "</a><br>");
+                    $rs->getBody()->write("<img src='$image' width='300em'>" . "</a><br>");
                 }
             }
         }
