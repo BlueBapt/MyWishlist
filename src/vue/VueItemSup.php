@@ -9,27 +9,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class VueItemSup
 {
-
-    public static function afficherFormulaire(Request $rq, Response $rs, $args):Response{
-        $vue = new VueItemSup();
-        $sup = $vue->form("acceuil");
-
-        /**
-        if (isset($_POST["name"]))
-            $_SESSION["name"] = $_POST["name"];
-        if (isset($_SESSION["name"]) && !$vue->verifierExistanceItem($_SESSION["name"])) {
-            unset($_SESSION["name"]);
-            $notExist = $vue->form("inexist");
-            $rs->getBody()->write(<<<END
-                $notExist
-            END
-            );
-        }
-        */
-
-        return $rs;
-    }
-
     public static function acceuil(Request $rq, Response $rs, $args) : Response{
         $rs->getBody()->write(<<<END
             <!DOCTYPE html>
