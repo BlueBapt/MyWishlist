@@ -8,6 +8,7 @@ use mywishlist\model\Item;
 use mywishlist\model\Liste;
 use mywishlist\vue\VueAjoutItem;
 use mywishlist\vue\VueHeader;
+use mywishlist\vue\VueImageItem;
 use mywishlist\vue\VueItemSup;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -28,14 +29,16 @@ class ItemController
         $ic = new ItemController();
         $acc = $ic->form();
 
-        if (!isset($_POST["actionAcc"])) {
+        if (isset($_POST["name"]))
+            $_SESSION["name"] = $_POST["name"];
+        if (isset($_POST["actionAcc"]))
+            $_SESSION["actionAcc"] = $_POST["actionAcc"];
+
+        if (!isset($_SESSION["actionAcc"]) || !isset($_POST["actionAcc"]) && !isset($_SESSION["name"])) {
             $rs->getBody()->write(<<<END
             $acc
         END);
         }
-
-        if (isset($_POST["name"]))
-            $_SESSION["name"] = $_POST["name"];
 
         //oscar de la meilleur fonctionnalite
         if (isset($_SESSION["name"]) && !$ic->verifierExistanceItem($_SESSION["name"])) {
@@ -50,6 +53,7 @@ class ItemController
 
         if (isset($_POST["actionAcc"]) && $_POST["actionAcc"] == "ajout") {
             $rs = VueAjoutItem::formulaire($rq, $rs, $args);
+            unset($_SESSION["actionAcc"]);
         } elseif (isset($_POST["actionAcc"]) && $_POST["actionAcc"] == "sup") {
             if (!isset($_SESSION["name"])){
                 VueItemSup::acceuil($rq, $rs, $args);
@@ -63,13 +67,16 @@ class ItemController
 
         if (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "yes") {
             $ic->sup($ic->idItem($_SESSION["name"]));
+            unset($_SESSION["actionAcc"]);
             header(1);
         } elseif (isset($_SESSION["name"]) && isset($_POST["verif"]) && $_POST["verif"] == "no"){
             unset($_SESSION["name"]);
+            unset($_SESSION["actionAcc"]);
         }
 
         if (isset($_POST["verif"]) && $_POST["verif"] == "no" || isset($_POST["verif"]) && $_POST["verif"] == "yes") {
             header(1);
+            unset($_SESSION["actionAcc"]);
         }
 
 
@@ -89,6 +96,7 @@ class ItemController
                         }
                     </style>
                 END);
+                unset($_SESSION["actionAcc"]);
             } else if(!$ic->verifierExistanceListe($_POST["token"])){
                 $rs->getBody()->write(<<<END
                     <div class="reussite">La liste n'existe pas !!!</div>
@@ -134,6 +142,49 @@ class ItemController
             }
         }
 
+        if (isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] == "ajoutImg" || isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] == "modifImg") {
+            if (!isset($_SESSION["name"]) && !isset($_POST["img"])){
+                unset($_SESSION["name"]);
+                VueImageItem::acceuil($rq, $rs, $args);
+            }
+
+            if (isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] === "ajoutImg" && isset($_SESSION["name"]) && $ic->verifierExistanceItem($_SESSION["name"]) && !isset($_POST["img"])) {
+                VueImageItem::ajouterImage($rq, $rs, $args);
+            } elseif (isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] === "modifImg" && $ic->verifierExistanceItem($_SESSION["name"]) && !isset($_POST["img"])) {
+                VueImageItem::modifierImage2($rq, $rs, $args);
+            } elseif (isset($_POST["name"]) && isset($_SESSION["actionAcc"]) && !$ic->verifierExistanceItem($_SESSION["name"]) && !isset($_POST["img"])) {
+                VueImageItem::acceuil($rq, $rs, $args);
+                $rs->getBody()->write(<<<END
+            <div class="error">L'item n'existe pas !</div>
+                    <style>
+                        .error{
+                            background-color: red;
+                            width: 50%;
+                            margin-left: 25%;
+                            color: white;
+                            text-align: center;
+                            height: 2em;
+                        }
+                    </style>
+            END
+                );
+            }
+        }
+
+        if (isset($_POST["img"]) && isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] == "ajoutImg") {
+            $ic->ajoutImage();
+            VueImageItem::acceuil($rq, $rs, $args);
+            unset($_SESSION["actionAcc"]);
+            unset($_POST["img"]);
+            unset($_SESSION["name"]);
+        }
+        if (isset($_POST["img"]) && isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] == "modifImg") {
+            $ic->modifierImage();
+            VueImageItem::acceuil($rq, $rs, $args);
+            unset($_SESSION["actionAcc"]);
+            unset($_POST["img"]);
+            unset($_SESSION["name"]);
+        }
 
         return $rs;
     }
@@ -338,6 +389,72 @@ class ItemController
         if (isset($_POST["img"]))
             $nl->img=$_POST["img"];
         $nl->tarif=$_POST["tarif"];
+
+        try {
+            $nl->save();
+        }catch(\Exception $e){
+            echo $e;
+        }
+    }
+
+    private function ajoutImage() {
+        $db = new DB();
+        $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
+            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'prefix'=>''] );
+        $db->setAsGlobal();
+        $db->bootEloquent();
+
+        $id = 0;
+        if (isset($_SESSION["name"]))
+            $id = $this->idItem($_SESSION["name"]);
+        try {
+            $res = Item::select("*")->where("id", "like", $id)->get();
+        }catch(\Exception $e){
+            echo $e;
+        }
+        $nl = Item::where("id", "=", $id)->first();
+        foreach ($res as $r) {
+            $nl->nom = $r->nom;
+            $nl->descr = $r->descr;
+            $nl->liste_id = $r->liste_id;
+            $nl->url = $r->url;
+            $nl->tarif = $r->tarif;
+        }
+        $nl->img=$_POST["img"];
+
+
+        try {
+            $nl->save();
+        }catch(\Exception $e){
+            echo $e;
+        }
+    }
+
+    private function modifierImage() {
+        $db = new DB();
+        $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
+            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'prefix'=>''] );
+        $db->setAsGlobal();
+        $db->bootEloquent();
+
+        $id = $this->idItem($_SESSION["name"]);
+        try {
+            $res = Item::select("*")->where("id", "like", $id)->get();
+        }catch(\Exception $e){
+            echo $e;
+        }
+        $nl = Item::where("id", "=", $id)->first();
+        foreach ($res as $r) {
+            $nl->nom = $r->nom;
+            $nl->descr = $r->descr;
+            $nl->liste_id = $r->liste_id;
+            $nl->url = $r->url;
+            $nl->tarif = $r->tarif;
+        }
+        $nl->img=$_POST["img"];
+
 
         try {
             $nl->save();
