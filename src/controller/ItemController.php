@@ -10,6 +10,7 @@ use mywishlist\vue\VueAjoutItem;
 use mywishlist\vue\VueHeader;
 use mywishlist\vue\VueImageItem;
 use mywishlist\vue\VueItemSup;
+use mywishlist\vue\VueModifItem;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -34,7 +35,7 @@ class ItemController
         if (isset($_POST["actionAcc"]))
             $_SESSION["actionAcc"] = $_POST["actionAcc"];
 
-        if (!isset($_SESSION["actionAcc"]) || !isset($_POST["actionAcc"]) && !isset($_SESSION["name"])) {
+        if (!isset($_SESSION["actionAcc"]) && !isset($_SESSION["name"]) || !isset($_SESSION["actionAcc"])) {
             $rs->getBody()->write(<<<END
             $acc
         END);
@@ -168,20 +169,56 @@ class ItemController
                     </style>
             END
                 );
+                unset($_SESSION["name"]);
             }
         }
 
         if (isset($_POST["img"]) && isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] == "ajoutImg") {
             $ic->ajoutImage();
+            echo "<h1 style='color: white'>Image ajouté</h1><br><h2 style='color: white'>Veuillez refresh la page</h2>";
             unset($_SESSION["actionAcc"]);
             unset($_POST["img"]);
             unset($_SESSION["name"]);
         }
         if (isset($_POST["img"]) && isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] == "modifImg") {
             $ic->modifierImage();
+            echo "<h1 style='color: white'>Image modifié</h1><br><h2 style='color: white'>Veuillez refresh la page</h2>";
             unset($_SESSION["actionAcc"]);
             unset($_POST["img"]);
             unset($_SESSION["name"]);
+        }
+
+        if (isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] == "supImg") {
+            if (!isset($_SESSION["name"])) {
+                VueImageItem::acceuil($rq, $rs, $args);
+            }
+            header(1);
+        }
+
+        if (isset($_SESSION["name"]) && isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] == "supImg") {
+            $ic->supImage();
+            echo "<h1 style='color: white'>Image supprimé</h1><br><h2 style='color: white'>Veuillez refresh la page</h2>";
+            unset($_SESSION["name"]);
+            unset($_SESSION["actionAcc"]);
+            header(1);
+        }
+
+        if (isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] == "modif") {
+            VueModifItem::formulaire($rq, $rs, $args);
+            if (isset($_SESSION["name"])) {
+                $ic->modifItem();
+                unset($_POST["descriptionModif"]);
+                unset($_POST["tokenModif"]);
+                unset($_POST["urlModif"]);
+                unset($_POST["tarifModif"]);
+                if (isset($_POST["good"]) && $_POST["good"] == 1) {
+                    unset($_SESSION["actionAcc"]);
+                    unset($_POST["actionAcc"]);
+                    unset($_POST["name"]);
+                    unset($_SESSION["name"]);
+                    echo "<h1 style='color: white'>Modification effectué</h1><br><h2 style='color: white'>Veuillez refresh la page</h2>";
+                }
+            }
         }
 
         return $rs;
@@ -453,6 +490,85 @@ class ItemController
         }
         $nl->img=$_POST["img"];
 
+
+        try {
+            $nl->save();
+        }catch(\Exception $e){
+            echo $e;
+        }
+    }
+
+    private function supImage() {
+        $db = new DB();
+        $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
+            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'prefix'=>''] );
+        $db->setAsGlobal();
+        $db->bootEloquent();
+
+        $id = $this->idItem($_SESSION["name"]);
+        try {
+            $res = Item::select("*")->where("id", "like", $id)->get();
+        }catch(\Exception $e){
+            echo $e;
+        }
+        $nl = Item::where("id", "=", $id)->first();
+        foreach ($res as $r) {
+            $nl->nom = $r->nom;
+            $nl->descr = $r->descr;
+            $nl->liste_id = $r->liste_id;
+            $nl->url = $r->url;
+            $nl->tarif = $r->tarif;
+        }
+        $nl->img=null;
+
+
+        try {
+            $nl->save();
+        }catch(\Exception $e){
+            echo $e;
+        }
+    }
+
+    private function modifItem() {
+        $db = new DB();
+        $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
+            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'prefix'=>''] );
+        $db->setAsGlobal();
+        $db->bootEloquent();
+
+        $id = $this->idItem($_SESSION["name"]);
+        try {
+            $res = Item::select("*")->where("id", "like", $id)->get();
+        }catch(\Exception $e){
+            echo $e;
+        }
+        $nl = Item::where("id", "=", $id)->first();
+        foreach ($res as $r) {
+            $nl->nom = $r->nom;
+            $nl->liste_id = $r->liste_id;
+
+            if (isset($_POST["descriptionModif"]) && $_POST["descriptionModif"] != null)
+                $nl->descr = $_POST["descriptionModif"];
+            else
+                $nl->descr = $r->descr;
+
+            if (isset($_POST["tokenModif"]) && $_POST["tokenModif"] != null)
+                $nl->liste_id = $this->idListe($_POST["tokenModif"]);
+            else
+                $nl->liste_id = $r->liste_id;
+
+            if (isset($_POST["urlModif"]) && $_POST["urlModif"] != null)
+                $nl->url = $_POST["urlModif"];
+            else
+                $nl->url = $r->url;
+
+            if (isset($_POST["tarifModif"]) && $_POST["tarifModif"] != null)
+                $nl->tarif = $_POST["tarifModif"];
+            else
+                $nl->tarif = $r->tarif;
+        }
 
         try {
             $nl->save();
