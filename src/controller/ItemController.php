@@ -150,9 +150,9 @@ class ItemController
 
             if (isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] === "ajoutImg" && isset($_SESSION["name"]) && $ic->verifierExistanceItem($_SESSION["name"]) && !isset($_POST["img"])) {
                 VueImageItem::ajouterImage($rq, $rs, $args);
-            } elseif (isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] === "modifImg" && $ic->verifierExistanceItem($_SESSION["name"]) && !isset($_POST["img"])) {
+            } elseif (isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] === "modifImg" && isset($_SESSION["name"]) && $ic->verifierExistanceItem($_SESSION["name"]) && !isset($_POST["img"])) {
                 VueImageItem::modifierImage2($rq, $rs, $args);
-            } elseif (isset($_POST["name"]) && isset($_SESSION["actionAcc"]) && !$ic->verifierExistanceItem($_SESSION["name"]) && !isset($_POST["img"])) {
+            } elseif (isset($_POST["name"]) && isset($_SESSION["actionAcc"]) && isset($_SESSION["name"]) && !$ic->verifierExistanceItem($_SESSION["name"]) && !isset($_POST["img"])) {
                 VueImageItem::acceuil($rq, $rs, $args);
                 $rs->getBody()->write(<<<END
             <div class="error">L'item n'existe pas !</div>
@@ -173,14 +173,12 @@ class ItemController
 
         if (isset($_POST["img"]) && isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] == "ajoutImg") {
             $ic->ajoutImage();
-            VueImageItem::acceuil($rq, $rs, $args);
             unset($_SESSION["actionAcc"]);
             unset($_POST["img"]);
             unset($_SESSION["name"]);
         }
         if (isset($_POST["img"]) && isset($_SESSION["actionAcc"]) && $_SESSION["actionAcc"] == "modifImg") {
             $ic->modifierImage();
-            VueImageItem::acceuil($rq, $rs, $args);
             unset($_SESSION["actionAcc"]);
             unset($_POST["img"]);
             unset($_SESSION["name"]);
