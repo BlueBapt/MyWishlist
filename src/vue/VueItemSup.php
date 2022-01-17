@@ -24,6 +24,7 @@ class VueItemSup
                         <p class='nom'>
                             <label for='name'>Entrer le nom de l'item : </label>
                             <input type='text' name='name' id='name' placeholder='Nom de l item' required>
+                            <input type='hidden' name='actionAcc' id='name' value='sup' required>
                         </p>
                         <input type='submit' value='Valider' id='bt'>
                     </fieldset>
