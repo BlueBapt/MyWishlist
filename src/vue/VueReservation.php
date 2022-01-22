@@ -33,27 +33,34 @@ class VueReservation{
     return $rs;
     }
 
-    public static function CreerReservation(Request $rq, Response $rs, $args):Response{
-        setcookie("reserv","2 Heures", time() + 3600 * 2,"vue");
-        $track_user_code = $_COOKIE['reserv'];
-       
-        $rs->getBody()->write(<<<END
-            Attente de la reservation<br>
-            Temps restant : $track_user_code <br>
-        END);
-        if($track_user_code = 0){
-            $rs->getBody()->write(<<<END
-                Nom du participant : Nom Utilisateur<br>
-                Message    
-            
-            END);
-            print("Lancer Reservation");
-            print("Nom :");
-            print("Mail :");
-            //ajoute la reservation
+    public static function afficherFormulaireReservation() : string {
+        if (isset($_COOKIE['pseudo'])) {
+            $p=$_COOKIE['pseudo'];
         }
+        else {
+            $p="";
+        }
+        $formulaire = 
+            "<form action=\"\" method=\"post\">
+                <h2>Reserver un Item</h2>
+                           <div class=\"formulaire\">
+                                <input style=\"text-align:center\" type=\"text\" name=\"pseudo\" value='$p' placeholder='Pseudonyme' required>
+                           </div>
+                           <div class=\"formulaire\">
+                                <input style=\"text-align:center\" type=\"text\" name=\"message\" placeholder='Message (facultatif)'>
+                           </div>
+                           <div class=\"formulaire\">
+                                <input type=\"submit\" value=\"Valider\" />
+                           </div>
+		               </form>";
+        $res = $formulaire;
+        $html = <<<END
+        <div class="formulaireReservation">
+        $res
+        </div>
+END;
+    return $html;
+    }
 
     }
 
-
-}
