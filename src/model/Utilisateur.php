@@ -25,5 +25,4 @@ class Utilisateur extends \Illuminate\Database\Eloquent\Model {
 
 
 
-
 ?>

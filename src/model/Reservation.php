@@ -5,16 +5,11 @@ namespace mywishlist\model;
 class Reservation extends  \Illuminate\Database\Eloquent\Model {
 
     protected $table = 'reservation';
-    protected $primaryKey = 'idReservation'; 
+    protected $primaryKey = 'idItem'; 
     public $timestamps = false;
 
-    public function getItem(){
-        return $this->belongsTo('mywishList\model\Item', 'idItem');
+    public function reservation(){
+        return $this->Hasmany('\mywishlist\model\Reservation', 'idItem');
     }
-
-    public function getList(){
-        return $this->belongsTo('mywishList\model\Liste', 'idList');
-    }
-    
 
 }
