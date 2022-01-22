@@ -38,32 +38,6 @@ $app->post('/item/action',function(Request $rq, Response $rs, $args):Response{
     session_start();
     return ItemController::itemAction($rq, $rs, $args);
 });
-
-$app->get('/modifie/item',function (Request $rq, Response $rs, $args):Response {
-    session_start();
-    try {
-        VueHeader::afficherFormulaire($rq, $rs, $args);
-        return VueImageItem::afficherFormulaire($rq, $rs, $args);
-    }catch (\Throwable $e){
-        echo $e;
-    }
-});
-$app->post('/modifie/item',function (Request $rq, Response $rs, $args):Response {
-    try {
-        session_start();
-        VueHeader::afficherFormulaire($rq, $rs, $args);
-        return VueImageItem::afficherFormulaire($rq, $rs, $args);
-    }catch (\Throwable $e){
-        echo $e;
-    }
-    return $rs;
-});
-/**
-$app->post('/modifie/item',function (Request $rq, Response $rs, $args):Response {
-    VueHeader::afficherFormulaire($rq, $rs, $args);
-    return VueImageItem::afficherFormulaire($rq, $rs, $args);
-});
-*/
 $app->get('/',function (Request $rq, Response $rs, $args):Response {
     session_start();
     return VueAcceuil::afficherFormulaire($rq, $rs, $args);
@@ -91,6 +65,7 @@ $app->post('/liste/{no}/{token}',function(Request $rq, Response $rs, $args):Resp
 
 $app->get('/item/{id}',function(Request $rq, Response $rs, $args):Response{
     session_start();
+    VueHeader::afficherFormulaire($rq,$rs,$args);
     return VueAfficherItem::affichageItem($rq,$rs,$args);
 });
 
