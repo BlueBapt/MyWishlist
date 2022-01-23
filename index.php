@@ -116,6 +116,7 @@ $app->get('/deco',function(Request $rq,Response $rs, $args):Response{
     session_start();
     try{
         unset($_SESSION["user"]);
+        unset($_SESSION["id"]);
         $rs->getBody()->write("c bon");
     }catch(Exception $e){
         echo $e;
