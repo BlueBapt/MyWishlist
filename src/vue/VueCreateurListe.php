@@ -113,4 +113,8 @@ END);
         }
         return $rs;
     }
+
+    public static function etatReservation($url){
+        
+    }
 }
