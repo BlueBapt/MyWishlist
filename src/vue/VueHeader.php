@@ -10,6 +10,9 @@ class VueHeader
 {
     public static function afficherFormulaire(Request $rq, Response $rs, $args):Response
     {
+        $url = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
+        $sep = explode("/mywishlist", $url);
+        $url = $sep[0] . "/mywishlist";
 
         $user = "inscription/connexion";
         $co = "https://127.0.0.1/mywishlist/inscription";
@@ -17,6 +20,8 @@ class VueHeader
             $user = $_SESSION["user"];
             $co = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
         }
+
+
         $rs->getBody()->write(<<<END
                         <header>
                         <div class="title">
@@ -30,12 +35,8 @@ class VueHeader
                                 </div>
                                 <div class="item" id="item">
                                     <button id="itemB"><h2>Item</h2></button>
-                                    <a href="http://127.0.0.1/mywishlist/ajout/item" id="headerA">Ajouter un item</a>
-                                    <a href="" id="headerA">Supprimer un item</a>
-                                    <a href="http://127.0.0.1/mywishlist/modifie/item" id="headerA">Modifier un item</a>
-                                    <a href="" id="headerA">Ajouter une image</a>
-                                    <a href="" id="headerA">Modifier une image</a>
-                                    <a href="" id="headerA">Supprimer une image</a>
+                                    <a href="$url/choix/item" id="headerA">Afficher un item</a>
+                                    <a href="$url/item/action" id="headerA">Action sur un item</a>
                                 </div>
                             </div>
                             <h1 class="mwl"><a href="/mywishlist">My Wish List</a></h1>
@@ -59,7 +60,7 @@ class VueHeader
                             })
                             itemB.addEventListener("click", () => {
                                 if (desI) {
-                                    item.style.height = 16 +'em'
+                                    item.style.height = 6.5 +'em'
                                     desI = false
                                 }else {
                                     item.style.height = 2 +'em'
