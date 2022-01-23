@@ -88,6 +88,12 @@ class VueAfficherItem
                     margin-bottom: 1em;
                     margin-right: .2em;
                 }
+                
+                @media screen and (max-width: 50em) {
+                    .form{
+                        width: calc(20% + 25em)
+                    }
+                }
             </style>
         END
         );
