@@ -17,9 +17,9 @@ class VueCompte
         $url = $sep[0] . "/mywishlist";
 
         $db = new DB();
-        $db->addConnection(['driver' => 'mysql', 'host' => 'localhost', 'database' => 'mywishlist',
-            'username' => 'wishmaster', 'password' => 'TropFort54', 'charset' => 'utf8', 'collation' => 'utf8_unicode_ci',
-            'prefix' => '']);
+        $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
+            'username'=>'root','password'=>'','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
 

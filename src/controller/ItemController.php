@@ -20,7 +20,7 @@ class ItemController
     {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'username'=>'root','password'=>'','charset'=>'utf8','collation'=>'utf8_unicode_ci',
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
@@ -227,7 +227,7 @@ class ItemController
     private function verifierExistanceListe(String $token) : bool {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'username'=>'root','password'=>'','charset'=>'utf8','collation'=>'utf8_unicode_ci',
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
@@ -255,7 +255,7 @@ class ItemController
     private function verifierExistanceItem(String $nom) : bool {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'username'=>'root','password'=>'','charset'=>'utf8','collation'=>'utf8_unicode_ci',
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
@@ -285,7 +285,7 @@ class ItemController
     private function verifierExistanceItemDescr(String $nom, String $descr) : bool {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'username'=>'root','password'=>'','charset'=>'utf8','collation'=>'utf8_unicode_ci',
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
@@ -330,7 +330,7 @@ class ItemController
     private function idListe(String $token) : int {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'username'=>'root','password'=>'','charset'=>'utf8','collation'=>'utf8_unicode_ci',
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
@@ -354,7 +354,7 @@ class ItemController
     private function idItem(String $nom) : int {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'username'=>'root','password'=>'','charset'=>'utf8','collation'=>'utf8_unicode_ci',
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
@@ -378,7 +378,7 @@ class ItemController
     private function sup(int $idItem){
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'username'=>'root','password'=>'','charset'=>'utf8','collation'=>'utf8_unicode_ci',
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
@@ -402,7 +402,7 @@ class ItemController
     private function ajouterItem(int $idListe) {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'username'=>'root','password'=>'','charset'=>'utf8','collation'=>'utf8_unicode_ci',
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
@@ -435,7 +435,7 @@ class ItemController
     private function ajoutImage() {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'username'=>'root','password'=>'','charset'=>'utf8','collation'=>'utf8_unicode_ci',
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
@@ -469,7 +469,7 @@ class ItemController
     private function modifierImage() {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'username'=>'root','password'=>'','charset'=>'utf8','collation'=>'utf8_unicode_ci',
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
@@ -501,7 +501,7 @@ class ItemController
     private function supImage() {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'username'=>'root','password'=>'','charset'=>'utf8','collation'=>'utf8_unicode_ci',
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();
@@ -533,7 +533,7 @@ class ItemController
     private function modifItem() {
         $db = new DB();
         $db->addConnection( ['driver'=>'mysql','host'=>'localhost','database'=>'mywishlist',
-            'username'=>'wishmaster','password'=>'TropFort54','charset'=>'utf8','collation'=>'utf8_unicode_ci',
+            'username'=>'root','password'=>'','charset'=>'utf8','collation'=>'utf8_unicode_ci',
             'prefix'=>''] );
         $db->setAsGlobal();
         $db->bootEloquent();

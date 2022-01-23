@@ -100,30 +100,5 @@ $app->get('/compte',function(Request $rq,Response $rs, $args):Response{
 });
 
 
-$app->get('/cheat',function(Request $rq,Response $rs, $args):Response{
-    session_start();
-    try{
-        Authentification::creerUtilisateur("Jamy","juste","oui",10);
-        Authentification::authentification("Jamy","juste");
-        $rs->getBody()->write("c bon");
-    }catch(Exception $e){
-        echo $e;
-    }
-    return $rs;
-});
-
-$app->get('/deco',function(Request $rq,Response $rs, $args):Response{
-    session_start();
-    try{
-        unset($_SESSION["user"]);
-        unset($_SESSION["id"]);
-        $rs->getBody()->write("c bon");
-    }catch(Exception $e){
-        echo $e;
-    }
-    return $rs;
-});
-
-
 
 $app->run();
