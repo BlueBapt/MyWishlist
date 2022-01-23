@@ -28,10 +28,8 @@ class VueHeader
                             <div class="menu" id="menu">
                                 <div class="liste" id="liste">
                                     <button id="listeB"><h2>Liste</h2></button>
-                                    <a href="http://127.0.0.1/mywishlist/creer/liste" id="headerA">Ajouter une liste</a>
-                                    <a href="" id="headerA">Afficher une liste</a>
-                                    <a href="" id="headerA">Modifier une liste</a>
-                                    <a href="" id="headerA">Partager une liste</a>
+                                    <a href="$url/creer/liste" id="headerA">Ajouter une liste</a>
+                                    <a href="$co" id="headerA">Partager une liste</a>
                                 </div>
                                 <div class="item" id="item">
                                     <button id="itemB"><h2>Item</h2></button>
