@@ -15,6 +15,10 @@ use Illuminate\Database\Capsule\Manager as DB;
 class VueListe{
     
     public static function vueAfficherTout(Request $rq, Response $rs, $args, bool $token){
+        $url = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
+        $sep = explode("/mywishlist", $url);
+        $url = $sep[0] . "/mywishlist";
+
         $db = new DB();
         $db->addConnection(['driver' => 'mysql', 'host' => 'localhost', 'database' => 'mywishlist',
             'username' => 'wishmaster', 'password' => 'TropFort54', 'charset' => 'utf8', 'collation' => 'utf8_unicode_ci',
@@ -36,7 +40,7 @@ class VueListe{
                     }
                     if (str_starts_with($i->img, "http"))
                         $image = $i->img;
-                    $rs->getBody()->write("<a href='http://localhost/mywishlist/item/$i->id'>");
+                    $rs->getBody()->write("<a href='$url/item/$i->id'>");
                     $rs->getBody()->write("<img src='$image' width='300em'>" . "</a><br>");
                 }
             }

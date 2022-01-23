@@ -12,6 +12,10 @@ class VueCompte
 {
     public static function afficherCompte(Request $rq, Response $rs, $args):Response
     {
+        $url = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
+        $sep = explode("/mywishlist", $url);
+        $url = $sep[0] . "/mywishlist";
+
         $db = new DB();
         $db->addConnection(['driver' => 'mysql', 'host' => 'localhost', 'database' => 'mywishlist',
             'username' => 'wishmaster', 'password' => 'TropFort54', 'charset' => 'utf8', 'collation' => 'utf8_unicode_ci',
@@ -35,7 +39,7 @@ class VueCompte
             }else{
                 $titre = $titre . "<p><span style='color: gray'>&ensp</span>Cete liste est publique</p>";
             }
-            $titre = $titre . "<span style='color: gray; text-decoration: none'>&ensp</span><a href='http://127.0.0.1/mywishlist/liste/".$l->no."/".$l->token."' style='color: white; margin: 0'>Lien de modification</a></div>";
+            $titre = $titre . "<span style='color: gray; text-decoration: none'>&ensp</span><a href='$url/liste/".$l->no."/".$l->token."' style='color: white; margin: 0'>Lien de modification</a></div>";
         }
         $rs->getBody()->write("$titre </div>");
         $rs->getBody()->write("</tout>");
