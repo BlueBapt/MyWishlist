@@ -25,6 +25,10 @@ class VueCreateurListe
             <label for="exp">Entrer la date d'expiration : </label>
             <input type="date" name="exp" id="exp" required>
         </p>
+        <p class="exp">
+            <label for="mdp">Entrer un mot de passe : </label>
+            <input type="text" name="mdp" id="mdp" minlength="4" required>
+        </p>
         <input type="submit" value="Valider">
         </fieldset>
     </form>
@@ -39,7 +43,7 @@ class VueCreateurListe
         color:white;
         width: 50%;
         background-color: green;
-        border: 5px ridge white;
+        border: 0.2em ridge white;
         margin-left: 25%;
         height: 2em;
     }
@@ -48,14 +52,15 @@ class VueCreateurListe
         width: 50%;
         grid-column: 2;
         background-color: rgb(22, 31, 41);
-        border: 5px ridge white;
+        border: 0.2em ridge white;
         margin-left: 25%;
-        height: 205px;
+        height: 15em;
+        font-size: 1.1em;
     }
 
     form > fieldset > p{
         color: white;
-        margin-bottom: 20px;
+        margin-bottom: 1.2em;
     }
 
     legend{
@@ -72,40 +77,20 @@ END);
 
     public static function afficherPasCo(Request $rq, Response $rs, $args):Response{
         $rs->getBody()->write(<<<END
-    <h3>Connectez vous pour créer une liste!</h3>
+    <h3 class="erreur">Connectez vous pour créer une liste!</h3>
 
     <style>
         body{
-        background-color: lightgray;
-        background-size: cover;
+        text-align: center ;
+        font-size: 1.1em;
     }
     
-    .reussite{
+    .erreur{
+        font-size: 1.3em;
         color:white;
-        width: 50%;
-        background-color: green;
-        border: 5px ridge white;
-        margin-left: 25%;
-        height: 2em;
     }
-
-    form{
-        width: 50%;
-        grid-column: 2;
-        background-color: rgb(22, 31, 41);
-        border: 5px ridge white;
-        margin-left: 25%;
-        height: 205px;
-    }
-
-    form > fieldset > p{
-        color: white;
-        margin-bottom: 20px;
-    }
-
-    legend{
-        color: white;
-    }
+    
+    
     </style>
 </body>
 </html>

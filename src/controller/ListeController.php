@@ -119,7 +119,7 @@ END
 
     public static function envoyerListe(Request $rq, Response $rs, $args){
         $rs=ListeController::afficherCreerListe($rq,$rs,$args);
-        if(isset($_POST["description"]) && isset($_POST["titre"]) && isset($_POST["exp"])){
+        if(isset($_POST["description"]) && isset($_POST["titre"]) && isset($_POST["exp"]) && isset($_POST["mdp"])){
             $rs->getBody()->write(<<<END
             <div class="reussite" >L'opération est une réussite!</div>
             END);
@@ -144,7 +144,7 @@ END
             $nl->titre=filter_var($_POST["titre"] ,FILTER_SANITIZE_STRING);
             $nl->description=filter_var($_POST["description"] ,FILTER_SANITIZE_STRING);
             $nl->expiration=filter_var($_POST["exp"] ,FILTER_SANITIZE_STRING);
-            $nl->token="nosecure".$_SESSION["id"];
+            $nl->token=filter_var($_POST["mdp"],FILTER_SANITIZE_STRING);
 
             try {
                 $nl->save();
