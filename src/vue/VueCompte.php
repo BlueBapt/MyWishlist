@@ -48,7 +48,7 @@ class VueCompte
             }else{
                 $rs->getBody()->write("<div>Cete liste est publique</div>");
             }
-            $rs->getBody()->write("<a href='http://127.0.0.1/mywishlist/liste/s".$l->no."/".$l->token."'>Lien de modification</a></div>");
+            $rs->getBody()->write("<a href='http://127.0.0.1/mywishlist/liste/".$l->no."/".$l->token."'>Lien de modification</a></div>");
         }
         $rs->getBody()->write("</div>");
         $rs->getBody()->write("</tout>");
