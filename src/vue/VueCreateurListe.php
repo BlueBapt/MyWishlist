@@ -119,7 +119,12 @@ END);
             $rs->getBody()->write(<<<END
             Nombres de réservation :  $track_user_code
             END);
-        }
+            if(isset($_COOKIE['user_id'])){
+                $rs->getBody()->write(<<<END
+                Nom Utilisateur : $track_user_code
+                END);
+            }
+        } 
         return $rs;
     }
 }
