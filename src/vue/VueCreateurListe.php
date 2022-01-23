@@ -99,4 +99,32 @@ END);
 
         return $rs;
     }
+
+    public static function partagerListe(Request $rq, Response $rs, $args):Response{
+        $rs->getBody()->write(<<<END
+        <h3 class="Partage">Partager une liste !</h3>
+        END);  
+        $l = Liste::where("token", "=", $token)->first();
+        if (isset($_SESSION['session']['user_id']) && $l->user_id == -1) {
+            $l->user_id = $_SESSION['session']['user_id'];
+            $l->save();
+            $NouvelleURL = $args->urlFor('route_get_Liste');
+            $rs->getBody()->write($NouvelleURL);
+        }
+        return $rs;
+    }
+
+    public static function etatReservation(Request $rq, Response $rs, $args){
+        if(isset($_COOKIE['reservation'])){
+            $rs->getBody()->write(<<<END
+            Nombres de réservation :  $track_user_code
+            END);
+            if(isset($_COOKIE['user_id'])){
+                $rs->getBody()->write(<<<END
+                Nom Utilisateur : $track_user_code
+                END);
+            }
+        } 
+        return $rs;
+    }
 }
