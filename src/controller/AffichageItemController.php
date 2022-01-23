@@ -41,8 +41,6 @@ class AffichageItemController
             END);
         }
 
-
-
         return $rs;
     }
 
