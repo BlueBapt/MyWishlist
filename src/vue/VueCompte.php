@@ -27,7 +27,7 @@ class VueCompte
 
         $util= Utilisateur::select("psuedo","nom","prenom","user_id")->where("user_id","=",$_SESSION["id"])->get()->first();
         $rs->getBody()->write("<tout>");
-        $rs->getBody()->write("<h3 style='margin-left: 25%'>".$util->psuedo."</h3><br>");
+        $rs->getBody()->write("<h3 style='margin-left: 12.5%'>".$util->psuedo."</h3><br>");
 
         $listes =Liste::select("no","user_id","titre","token","estPublique")->where("user_id","=",$_SESSION["id"])->get();
         $rs->getBody()->write("<div class='listes'>");
@@ -48,8 +48,8 @@ class VueCompte
         .listes{
             display:flex;
             flex-direction: column;
-            width: 50%;
-            margin-left: 25%;
+            width: 75%;
+            margin-left: 12.5%;
         }
         .elem{
             display:flex;
