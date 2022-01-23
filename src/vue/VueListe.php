@@ -53,9 +53,36 @@ class VueListe{
             }
         }
         $commentaires = Message::select('no', "user_id", "idmessage", "contenu")->where("no", "=", $args["no"])->get();
-        $rs->getBody()->write("Commentaires :<br>");
+        $rs->getBody()->write("<p style='margin-bottom: 3em; color: blue; margin-left: .5em; text-decoration: underline; font-size: large'>Commentaires :</p>");
         foreach ($commentaires as $co) {
-            $rs->getBody()->write('<div class="message"><div class="psuedo">' . Utilisateur::select("user_id","psuedo")->where("user_id","=",$args["no"])->get()->first()->psuedo . '</div><div class="contenu">' . $co->contenu . '</div></div><br>');
+            $rs->getBody()->write('<div class="message"><div class="pseudo">' . Utilisateur::select("user_id","psuedo")->where("user_id","=",$args["no"])->get()->first()->psuedo . '</div><div class="contenu" id="contenu"><p class="cont" id="cont">' . $co->contenu . '</p></div></div><br>');
+            $rs->getBody()->write(<<<END
+                <style>
+                .message{
+                    display: flex;
+                    flex-direction: column;
+                    margin-bottom: 2em;
+                }
+                .pseudo{
+                    color: white; 
+                    text-decoration: underline;
+                    margin-bottom: 1em;
+                    margin-left: 1em;
+                }
+                .contenu{
+                    margin-left: 5em;
+                    background-color: cornflowerblue;
+                    color: white;
+                    border-radius: 1em;
+                    width: 12.5%;
+                    text-align: center;
+                }
+                .cont{
+                    padding: 1em;
+                }
+                </style>
+            END
+            );
         }
         return $rs;
     }
