@@ -27,17 +27,23 @@ class VueListe{
         $item = Item::select('id', 'img')->where('liste_id', '=', $args["no"])->get();
         foreach ($listes as $l) {
             if ($l->first() != null) {
-                $rs->getBody()->write($l->no . "<br>" . $l->user_id . "<br>" . $l->titre . "<br>" . $l->description . "<br>" . $l->expiration . "<br>" . $l->token . "<br>");
+                $rs->getBody()->write("<h2>". $l->titre . "</h2><br>" . $l->description . "<br>Date d'expiration : <strong>" . $l->expiration . "</strong><br><br>");
+                $url = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
+                $sep = explode("/mywishlist", $url);
+                $url = $sep[0] . "/mywishlist";
                 foreach ($item as $i) {
-                    if($token) {
-                        $image = '../../img/' . $i->img;
-                    }else{
-                        $image = '../img/'.$i->img;
+                    $_SESSION["idItem"]="oui";
+                    $lien = $url."/item/".$i->id;
+                    $rs->getBody()->write(<<<END
+                <iframe src="$lien"></iframe>
+                <style>
+                    iframe{
+                        width: 50em;
+                        height: 30em;
+                        border: none;
                     }
-                    if (str_starts_with($i->img, "http"))
-                        $image = $i->img;
-                    $rs->getBody()->write("<a href='http://localhost/mywishlist/item/$i->id'>");
-                    $rs->getBody()->write("<img src='$image' width='300em'>" . "</a><br>");
+                </style>
+            END);
                 }
             }
         }
