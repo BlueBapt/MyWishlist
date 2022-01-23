@@ -114,7 +114,12 @@ END);
         return $rs;
     }
 
-    public static function etatReservation($url){
-        
+    public static function etatReservation(Request $rq, Response $rs, $args){
+        if(isset($_COOKIE['reservation'])){
+            $rs->getBody()->write(<<<END
+            Nombres de réservation :  $track_user_code
+            END);
+        }
+        return $rs;
     }
 }
