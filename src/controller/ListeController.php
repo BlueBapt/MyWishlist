@@ -29,49 +29,47 @@ class ListeController
         $db->bootEloquent();
 
         $rs = VueHeader::afficherFormulaire($rq, $rs, $args);
-        try{
-            $elem = Liste::select("token","no","user_id")->where("no","=",$args["no"])->get()->first();
-            if($elem!=null) {
-                $bonToken = $elem->token;
-                $userID = $elem->user_id;
-            }else{
-                $bonToken=null;
+        if(isset($args["token"])) {
+            try {
+                $elem = Liste::select("token", "no", "user_id")->where("no", "=", $args["no"])->get()->first();
+                if ($elem != null) {
+                    $bonToken = $elem->token;
+                    $userID = $elem->user_id;
+                } else {
+                    $bonToken = null;
+                }
+            } catch (Exception $e) {
+                $bonToken = null;
             }
-        }catch(Exception $e){
-            $bonToken=null;
-        }
 
-        if($bonToken===$args["token"]) {
-            if(isset($_SESSION["id"]) && $userID===$_SESSION["id"] || isset($_SESSION["rights"]) && $_SESSION["rights"]>Authentification::$USER) {
+            if ($bonToken === $args["token"]) {
                 $rs->getBody()->write(<<<END
-            <form method="post">
-                 <input type="submit" name="effacer" value="Effacer cette liste">
-            </form>
+                <form method="post">
+                     <input type="submit" name="effacer" value="Effacer cette liste">
+                </form>
             
-END
+            END
                 );
+            }else{
+                $rs->getBody()->write("<h1> Erreur : le token rentré n'est pas le bon </h1>");
             }
-            $rs = VueListe::vueAfficherTout($rq, $rs, $args);
-            if (isset($_SESSION["user"])) {
-                $rs->getBody()->write(<<<END
+        }
+        $rs = VueListe::vueAfficherTout($rq, $rs, $args);
+        if (isset($_SESSION["user"])) {
+            $rs->getBody()->write(<<<END
                     <hr> <br>
                     <form method="post">
                         <textarea name="commentaire" id="titre" placeholder="Entrez un commentaire... (140 caracteres max)" required></textarea>
                         <input type="submit" value="Valider">
                     </form>
                     
-                    END
-                );
-            } else {
-                $rs->getBody()->write(<<<END
+                    END);
+        } else {
+            $rs->getBody()->write(<<<END
                     <hr> <br>
                         Connectez vous pour ajouter un commentaire!<br>
                     
-                    END
-                );
-            }
-        }else{
-            $rs->getBody()->write("<h1> Erreur : la liste n'existe pas ou le token n'est pas bon </h1>");
+                    END);
         }
         return $rs;
     }
