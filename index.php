@@ -2,6 +2,7 @@
 require 'vendor/autoload.php';
 
 use mywishlist\controller\AffichageItemController;
+use mywishlist\controller\CompteController;
 use mywishlist\controller\ConnexionController;
 use mywishlist\controller\ItemController;
 use mywishlist\controller\ListeController;
@@ -84,6 +85,15 @@ $app->get('/reservation',function(Request $rq,Response $rs, $args):Response{
     session_start();
     try{
         return VueReservation::afficherFormulaireReservation($rq,$rs,$args);
+    }catch(Exception $e){
+        echo $e;
+    }
+});
+
+$app->get('/compte',function(Request $rq,Response $rs, $args):Response{
+    session_start();
+    try{
+        return CompteController::afficherCompte($rq,$rs,$args);
     }catch(Exception $e){
         echo $e;
     }
