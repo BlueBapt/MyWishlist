@@ -15,10 +15,10 @@ class VueHeader
         $url = $sep[0] . "/mywishlist";
 
         $user = "inscription/connexion";
-        $co = "https://127.0.0.1/mywishlist/inscription";
+        $co = $url . "/inscription";
         if (isset($_SESSION["user"])) {
             $user = $_SESSION["user"];
-            $co = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            $co = $url . "/compte";
         }
 
 

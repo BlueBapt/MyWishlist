@@ -12,6 +12,10 @@ class VueCompte
 {
     public static function afficherCompte(Request $rq, Response $rs, $args):Response
     {
+        $url = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
+        $sep = explode("/mywishlist", $url);
+        $url = $sep[0] . "/mywishlist";
+
         $db = new DB();
         $db->addConnection(['driver' => 'mysql', 'host' => 'localhost', 'database' => 'mywishlist',
             'username' => 'wishmaster', 'password' => 'TropFort54', 'charset' => 'utf8', 'collation' => 'utf8_unicode_ci',
@@ -23,40 +27,29 @@ class VueCompte
 
         $util= Utilisateur::select("psuedo","nom","prenom","user_id")->where("user_id","=",$_SESSION["id"])->get()->first();
         $rs->getBody()->write("<tout>");
-        $rs->getBody()->write("<h3>".$util->psuedo."</h3><br>");
-
-        $rs->getBody()->write("<form method='post'>")."<br>";
-        if($util->nom!=null){
-            $rs->getBody()->write("Nom : ".$util->nom)."<br>";
-        }else{
-            $rs->getBody()->write("Nom : <input type='text' name='nom' id='nom' required><br>");
-        }
-
-        if($util->prenom!=null){
-            $rs->getBody()->write("Prenom : ".$util->prenom)."<br>";
-        }else{
-            $rs->getBody()->write("Prenom : <input type='text' name='prenom' id='prenom' required><br>");
-        }
-        $rs->getBody()->write("</form>")."<br>";
+        $rs->getBody()->write("<h3 style='margin-left: 25%'>".$util->psuedo."</h3><br>");
 
         $listes =Liste::select("no","user_id","titre","token","estPublique")->where("user_id","=",$_SESSION["id"])->get();
         $rs->getBody()->write("<div class='listes'>");
+        $titre = null;
         foreach($listes as $l){
-            $rs->getBody()->write("<div class='elem'>"."<nom>".$l->titre."</nom>");
+            $titre = "<div class='elem'>"."<p>".$l->titre."</p>";
             if($l->estPublique!=true){
-                $rs->getBody()->write("<div>Cete liste n'est pas publique</div>");
+                $titre = $titre . "<p><span style='color: gray'>&ensp</span>Cete liste n'est pas publique</p>";
             }else{
-                $rs->getBody()->write("<div>Cete liste est publique</div>");
+                $titre = $titre . "<p><span style='color: gray'>&ensp</span>Cete liste est publique</p>";
             }
-            $rs->getBody()->write("<a href='http://127.0.0.1/mywishlist/liste/".$l->no."/".$l->token."'>Lien de modification</a></div>");
+            $titre = $titre . "<span style='color: gray; text-decoration: none'>&ensp</span><a href='$url/liste/".$l->no."/".$l->token."' style='color: white; margin: 0'>Lien de modification</a></div>";
         }
-        $rs->getBody()->write("</div>");
+        $rs->getBody()->write("$titre </div>");
         $rs->getBody()->write("</tout>");
         $rs->getBody()->write(<<<END
         <style>
         .listes{
             display:flex;
             flex-direction: column;
+            width: 50%;
+            margin-left: 25%;
         }
         .elem{
             display:flex;

@@ -15,6 +15,10 @@ use Illuminate\Database\Capsule\Manager as DB;
 class VueListe{
     
     public static function vueAfficherTout(Request $rq, Response $rs, $args, bool $token){
+        $url = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
+        $sep = explode("/mywishlist", $url);
+        $url = $sep[0] . "/mywishlist";
+
         $db = new DB();
         $db->addConnection(['driver' => 'mysql', 'host' => 'localhost', 'database' => 'mywishlist',
             'username' => 'wishmaster', 'password' => 'TropFort54', 'charset' => 'utf8', 'collation' => 'utf8_unicode_ci',
@@ -44,6 +48,7 @@ class VueListe{
                     }
                 </style>
             END);
+            
                 }
             }
         }
