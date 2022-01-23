@@ -108,6 +108,8 @@ class VueAfficherItem
             </style>
         END
         );
+        if (isset($_SESSION["idItem"]))
+            unset($_SESSION["idItem"]);
         return $rs;
     }
 }

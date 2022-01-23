@@ -45,9 +45,7 @@ class AffichageItemController
                     }
                 </style>
             END);
-            unset($_SESSION["idItem"]);
         }
-
         return $rs;
     }
 
