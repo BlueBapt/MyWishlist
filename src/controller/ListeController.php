@@ -54,7 +54,7 @@ class ListeController
                 $rs->getBody()->write("<h1> Erreur : le token rentré n'est pas le bon </h1>");
             }
         }
-        $rs = VueListe::vueAfficherTout($rq, $rs, $args);
+        $rs = VueListe::vueAfficherTout($rq, $rs, $args, isset($args["token"]));
         if (isset($_SESSION["user"])) {
             $rs->getBody()->write(<<<END
                     <hr> <br>
