@@ -50,7 +50,6 @@ class VueAfficherItem
             <style>
                 .form{
                     width: calc(20% + 10em);
-                    margin-left: 37.5%;
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;

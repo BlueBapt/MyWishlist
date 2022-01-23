@@ -1,6 +1,7 @@
 <?php
 require 'vendor/autoload.php';
 
+use mywishlist\controller\AffichageItemController;
 use mywishlist\controller\ConnexionController;
 use mywishlist\controller\ItemController;
 use mywishlist\controller\ListeController;
@@ -65,8 +66,18 @@ $app->post('/liste/{no}/{token}',function(Request $rq, Response $rs, $args):Resp
 
 $app->get('/item/{id}',function(Request $rq, Response $rs, $args):Response{
     session_start();
-    VueHeader::afficherFormulaire($rq,$rs,$args);
     return VueAfficherItem::affichageItem($rq,$rs,$args);
+});
+
+$app->get('/choix/item',function(Request $rq, Response $rs, $args):Response{
+    session_start();
+    VueHeader::afficherFormulaire($rq,$rs,$args);
+    return AffichageItemController::affichageItem($rq,$rs,$args);
+});
+$app->post('/choix/item',function(Request $rq, Response $rs, $args):Response{
+    session_start();
+    VueHeader::afficherFormulaire($rq,$rs,$args);
+    return AffichageItemController::affichageItem($rq,$rs,$args);
 });
 
 $app->get('/reservation',function(Request $rq,Response $rs, $args):Response{
