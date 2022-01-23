@@ -29,9 +29,10 @@ class ListeController
         $db->bootEloquent();
 
         $rs = VueHeader::afficherFormulaire($rq, $rs, $args);
+        $elem=null;
         if(isset($args["token"])) {
             try {
-                $elem = Liste::select("token", "no", "user_id")->where("no", "=", $args["no"])->get()->first();
+                $elem = Liste::select("token", "no", "user_id","estPublique")->where("no", "=", $args["no"])->get()->first();
                 if ($elem != null) {
                     $bonToken = $elem->token;
                     $userID = $elem->user_id;
@@ -44,12 +45,19 @@ class ListeController
 
             if ($bonToken === $args["token"]) {
                 $rs->getBody()->write(<<<END
-                <form method="post">
+                     <form method="post">
                      <input type="submit" name="effacer" value="Effacer cette liste">
-                </form>
+                     END);
+                     if($elem!=null){
+                         if($elem->estPublique!=true){
+                            $rs->getBody()->write("<input type='submit' name='pub' value='Rendre publique'>");
+                         }
+                     }
+                     
+                     
+                $rs->getBody()->write("</form>");
             
-            END
-                );
+            
             }else{
                 $rs->getBody()->write("<h1> Erreur : le token rentré n'est pas le bon </h1>");
             }
@@ -99,6 +107,11 @@ class ListeController
             $aEffacer->delete();
             $rs = VueHeader::afficherFormulaire($rq,$rs,$args);
             $rs->getBody()->write("<h3>La liste a été supprimée!</h3>");
+        }else if(isset($_POST["pub"])){
+            $aModif = Liste::select("no","estPublique")->where("no","=",$args["no"])->get()->first();
+            $aModif->estPublique=1;
+            $aModif->save();
+            $rs=ListeController::afficherTout($rq, $rs, $args);
         }
         return $rs;
     }

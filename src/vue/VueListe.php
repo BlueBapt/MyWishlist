@@ -27,10 +27,13 @@ class VueListe{
         $db->bootEloquent();
 
 
-        $listes = Liste::select('no', 'user_id', 'titre', 'description', 'expiration', 'token')->where('no', '=', $args["no"])->get();
+        $listes = Liste::select('no', 'user_id', 'titre', 'description', 'expiration', 'token','estPublique')->where('no', '=', $args["no"])->get();
         $item = Item::select('id', 'img')->where('liste_id', '=', $args["no"])->get();
         foreach ($listes as $l) {
             if ($l->first() != null) {
+                if($l->estPublique===1){
+                    $rs->getBody()->write("<i>Cette liste est publique</i><br>");
+                }
                 $rs->getBody()->write("<h2>". $l->titre . "</h2><br>" . $l->description . "<br>Date d'expiration : <strong>" . $l->expiration . "</strong><br><br>");
                 $url = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
                 $sep = explode("/mywishlist", $url);
