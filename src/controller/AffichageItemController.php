@@ -34,7 +34,6 @@ class AffichageItemController
             unset($_SESSION["idItem"]);
         } elseif (isset($_POST["id"]) && $aic->verifierExistanceItem($_POST["id"])) {
             $lien = $url."/item/".$_POST["id"];
-            //echo "<a href='$lien'>";
             $rs->getBody()->write(<<<END
                 <iframe src="$lien"></iframe>
                 <style>
@@ -46,6 +45,7 @@ class AffichageItemController
                     }
                 </style>
             END);
+            unset($_SESSION["idItem"]);
         }
 
         return $rs;
