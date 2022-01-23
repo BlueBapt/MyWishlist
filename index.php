@@ -83,11 +83,12 @@ $app->post('/choix/item',function(Request $rq, Response $rs, $args):Response{
 $app->get('/reservation',function(Request $rq,Response $rs, $args):Response{
     session_start();
     try{
-        return VueReservation::etatReservation($rq,$rs,$args);
+        return VueReservation::afficherFormulaireReservation($rq,$rs,$args);
     }catch(Exception $e){
         echo $e;
     }
 });
+
 
 $app->get('/cheat',function(Request $rq,Response $rs, $args):Response{
     session_start();
@@ -111,5 +112,7 @@ $app->get('/deco',function(Request $rq,Response $rs, $args):Response{
     }
     return $rs;
 });
+
+
 
 $app->run();

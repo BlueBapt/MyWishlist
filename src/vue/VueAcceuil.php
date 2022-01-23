@@ -14,6 +14,7 @@ class VueAcceuil
             $user = $_SESSION["user"];
             $co = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
         }
+        VueHeader::afficherFormulaire($rq, $rs, $args);
         $rs->getBody()->write(<<<END
                     <!DOCTYPE html>
                     <html>
@@ -22,56 +23,6 @@ class VueAcceuil
                         <title>My wish list</title>
                         <link rel="stylesheet" href="/acceuil.css">
                     </head>
-                    <header>
-                        <div class="title">
-                            <div class="menu" id="menu">
-                                <div class="liste" id="liste">
-                                    <button id="listeB"><h2>Liste</h2></button>
-                                    <a href="http://127.0.0.1/mywishlist/creer/liste" id="headerA">Ajouter une liste</a>
-                                    <a href="" id="headerA">Afficher une liste</a>
-                                    <a href="" id="headerA">Modifier une liste</a>
-                                    <a href="" id="headerA">Partager une liste</a>
-                                </div>
-                                <div class="item" id="item">
-                                    <button id="itemB"><h2>Item</h2></button>
-                                    <a href="http://127.0.0.1/mywishlist/ajout/item" id="headerA">Ajouter un item</a>
-                                    <a href="" id="headerA">Supprimer un item</a>
-                                    <a href="" id="headerA">Modifier un item</a>
-                                    <a href="" id="headerA">Ajouter une image</a>
-                                    <a href="" id="headerA">Modifier une image</a>
-                                    <a href="" id="headerA">Supprimer une image</a>
-                                </div>
-                            </div>
-                            <h1 class="mwl">My Wish List</h1>
-                            <a id="insa" href="$co"><button id="ins">$user</button></a>
-                        </div>
-                        <script>
-                            const item = document.getElementById("item")
-                            const liste = document.getElementById("liste")
-                            const itemB = document.getElementById("itemB")
-                            const listeB = document.getElementById("listeB")
-                    
-                            let desL = true, desI = true
-                            listeB.addEventListener("click", () => {
-                                if (desL) {
-                                    liste.style.height = 12 +'em'
-                                    desL = false
-                                }else {
-                                    liste.style.height = 2 +'em'
-                                    desL = true
-                                }
-                            })
-                            itemB.addEventListener("click", () => {
-                                if (desI) {
-                                    item.style.height = 16 +'em'
-                                    desI = false
-                                }else {
-                                    item.style.height = 2 +'em'
-                                    desI = true
-                                }
-                            })
-                        </script>
-                    </header>
                     <body>
                         <div class="pres" id="pres">
                             <div class="presG" id="presG">
