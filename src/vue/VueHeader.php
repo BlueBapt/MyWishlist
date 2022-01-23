@@ -49,7 +49,7 @@ class VueHeader
                             let desL = true, desI = true
                             listeB.addEventListener("click", () => {
                                 if (desL) {
-                                    liste.style.height = 12 +'em'
+                                    liste.style.height = 6.5 +'em'
                                     desL = false
                                 }else {
                                     liste.style.height = 2 +'em'
