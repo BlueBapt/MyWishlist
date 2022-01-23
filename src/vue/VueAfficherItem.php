@@ -36,6 +36,17 @@ class VueAfficherItem
                     $image = $c->img;
             }
         }
+
+        if (!isset($_SESSION["idItem"])) {
+            VueHeader::afficherFormulaire($rq, $rs, $args);
+            $rs->getBody()->write(<<<END
+                <style>
+                    .form{
+                        margin-left: 37.5%;
+                    }
+                </style>
+            END);
+        }
         $rs->getBody()->write(<<<END
             <div class="form">
                 <div class="descr">

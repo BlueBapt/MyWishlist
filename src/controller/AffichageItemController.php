@@ -19,12 +19,19 @@ class AffichageItemController
         $sep = explode("/mywishlist", $url);
         $url = $sep[0] . "/mywishlist";
 
+        if (isset($_POST["id"]) && $aic->verifierExistanceItem($_POST["id"]))
+            $_SESSION["idItem"] = $_POST["id"];
+
         if (!isset($_POST["id"])) {
             $rs->getBody()->write(<<<END
                 $formulaire
             END);
         } elseif (isset($_POST["id"]) && !$aic->verifierExistanceItem($_POST["id"])){
-            echo "no";
+            $rs->getBody()->write(<<<END
+                $formulaire
+                <div style="background-color: red;color: white; height: 2em; width: 50%; margin-top: -21em; margin-left: 25%"><p>L'item n'existe pas</p></div>
+            END);
+            unset($_SESSION["idItem"]);
         } elseif (isset($_POST["id"]) && $aic->verifierExistanceItem($_POST["id"])) {
             $lien = $url."/item/".$_POST["id"];
             //echo "<a href='$lien'>";
